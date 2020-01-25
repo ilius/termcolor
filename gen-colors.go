@@ -73,21 +73,28 @@ import (
 
 type ColorProp struct {
 	RGBA color.RGBA
-	Name string
+	Num uint8
+	HTML string
+	Names []string
 }
 
 var Colors = [256]*ColorProp{
 `)
-	for num, name := range termcolor.ColorNames {
+	for num, names := range termcolor.ColorNames {
 		red, green, blue := getRGB(num)
 		htmlColor := rgbToHtml(red, green, blue)
 		fmt.Fprintf(
 			file,
-			"\t{color.RGBA{0x%02x, 0x%02x, 0x%02x, 0xff}, %#v}, // %d, %s \n",
-			red, green, blue,
-			name,
+			"\t&ColorProp{\n"+
+				"\t\tNum: %d,\n"+
+				"\t\tRGBA: color.RGBA{0x%02x, 0x%02x, 0x%02x, 0xff},\n"+
+				"\t\tHTML: %#v,\n"+
+				"\t\tNames: %#v,\n"+
+				"\t},\n",
 			num,
+			red, green, blue,
 			htmlColor,
+			names,
 		)
 	}
 	fmt.Fprintf(file, "}\n")

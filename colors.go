@@ -5,265 +5,1547 @@ import (
 )
 
 type ColorProp struct {
-	RGBA color.RGBA
-	Name string
+	RGBA  color.RGBA
+	Num   uint8
+	HTML  string
+	Names []string
 }
 
 var Colors = [256]*ColorProp{
-	{color.RGBA{0x00, 0x00, 0x00, 0xff}, "black"},          // 0, #000000
-	{color.RGBA{0xcc, 0x00, 0x00, 0xff}, "dark red 1"},     // 1, #cc0000
-	{color.RGBA{0x4e, 0x9a, 0x06, 0xff}, "mixed green 1"},  // 2, #4e9a06
-	{color.RGBA{0xc4, 0xa0, 0x00, 0xff}, "mixed orange 1"}, // 3, #c4a000
-	{color.RGBA{0x34, 0x65, 0xa4, 0xff}, "mixed blue 1"},   // 4, #3465a4
-	{color.RGBA{0x75, 0x50, 0x7b, 0xff}, "purple 1"},       // 5, #75507b
-	{color.RGBA{0x06, 0x98, 0x9a, 0xff}, "cyan 1"},         // 6, #06989a
-	{color.RGBA{0xd3, 0xd7, 0xcf, 0xff}, "light gray"},     // 7, #d3d7cf
-	{color.RGBA{0x55, 0x57, 0x53, 0xff}, "dark gray"},      // 8, #555753
-	{color.RGBA{0xef, 0x29, 0x29, 0xff}, "light red"},      // 9, #ef2929
-	{color.RGBA{0x8a, 0xe2, 0x34, 0xff}, "light green"},    // 10, #8ae234
-	{color.RGBA{0xfc, 0xe9, 0x4f, 0xff}, "yellow"},         // 11, #fce94f
-	{color.RGBA{0x72, 0x9f, 0xcf, 0xff}, "light blue"},     // 12, #729fcf
-	{color.RGBA{0xad, 0x7f, 0xa8, 0xff}, "light purple"},   // 13, #ad7fa8
-	{color.RGBA{0x34, 0xe2, 0xe2, 0xff}, "light cyan"},     // 14, #34e2e2
-	{color.RGBA{0xee, 0xee, 0xec, 0xff}, "light gray 2"},   // 15, #eeeeec
-	{color.RGBA{0x00, 0x00, 0x00, 0xff}, "black"},          // 16, #000000
-	{color.RGBA{0x00, 0x00, 0x5f, 0xff}, "blue 4"},         // 17, #00005f
-	{color.RGBA{0x00, 0x00, 0x87, 0xff}, "blue 3"},         // 18, #000087
-	{color.RGBA{0x00, 0x00, 0xaf, 0xff}, "blue 2"},         // 19, #0000af
-	{color.RGBA{0x00, 0x00, 0xd7, 0xff}, "blue 1"},         // 20, #0000d7
-	{color.RGBA{0x00, 0x00, 0xff, 0xff}, "blue"},           // 21, #0000ff
-	{color.RGBA{0x00, 0x5f, 0x00, 0xff}, "green 4"},        // 22, #005f00
-	{color.RGBA{0x00, 0x5f, 0x5f, 0xff}, "blue stone"},     // 23, #005f5f
-	{color.RGBA{0x00, 0x5f, 0x87, 0xff}, ""},               // 24, #005f87
-	{color.RGBA{0x00, 0x5f, 0xaf, 0xff}, ""},               // 25, #005faf
-	{color.RGBA{0x00, 0x5f, 0xd7, 0xff}, ""},               // 26, #005fd7
-	{color.RGBA{0x00, 0x5f, 0xff, 0xff}, ""},               // 27, #005fff
-	{color.RGBA{0x00, 0x87, 0x00, 0xff}, "green 3"},        // 28, #008700
-	{color.RGBA{0x00, 0x87, 0x5f, 0xff}, ""},               // 29, #00875f
-	{color.RGBA{0x00, 0x87, 0x87, 0xff}, ""},               // 30, #008787
-	{color.RGBA{0x00, 0x87, 0xaf, 0xff}, ""},               // 31, #0087af
-	{color.RGBA{0x00, 0x87, 0xd7, 0xff}, ""},               // 32, #0087d7
-	{color.RGBA{0x00, 0x87, 0xff, 0xff}, ""},               // 33, #0087ff
-	{color.RGBA{0x00, 0xaf, 0x00, 0xff}, "green 2"},        // 34, #00af00
-	{color.RGBA{0x00, 0xaf, 0x5f, 0xff}, ""},               // 35, #00af5f
-	{color.RGBA{0x00, 0xaf, 0x87, 0xff}, ""},               // 36, #00af87
-	{color.RGBA{0x00, 0xaf, 0xaf, 0xff}, ""},               // 37, #00afaf
-	{color.RGBA{0x00, 0xaf, 0xd7, 0xff}, ""},               // 38, #00afd7
-	{color.RGBA{0x00, 0xaf, 0xff, 0xff}, ""},               // 39, #00afff
-	{color.RGBA{0x00, 0xd7, 0x00, 0xff}, "green 1"},        // 40, #00d700
-	{color.RGBA{0x00, 0xd7, 0x5f, 0xff}, ""},               // 41, #00d75f
-	{color.RGBA{0x00, 0xd7, 0x87, 0xff}, ""},               // 42, #00d787
-	{color.RGBA{0x00, 0xd7, 0xaf, 0xff}, ""},               // 43, #00d7af
-	{color.RGBA{0x00, 0xd7, 0xd7, 0xff}, ""},               // 44, #00d7d7
-	{color.RGBA{0x00, 0xd7, 0xff, 0xff}, ""},               // 45, #00d7ff
-	{color.RGBA{0x00, 0xff, 0x00, 0xff}, "green"},          // 46, #00ff00
-	{color.RGBA{0x00, 0xff, 0x5f, 0xff}, ""},               // 47, #00ff5f
-	{color.RGBA{0x00, 0xff, 0x87, 0xff}, ""},               // 48, #00ff87
-	{color.RGBA{0x00, 0xff, 0xaf, 0xff}, ""},               // 49, #00ffaf
-	{color.RGBA{0x00, 0xff, 0xd7, 0xff}, ""},               // 50, #00ffd7
-	{color.RGBA{0x00, 0xff, 0xff, 0xff}, ""},               // 51, #00ffff
-	{color.RGBA{0x5f, 0x00, 0x00, 0xff}, "red 5"},          // 52, #5f0000
-	{color.RGBA{0x5f, 0x00, 0x5f, 0xff}, ""},               // 53, #5f005f
-	{color.RGBA{0x5f, 0x00, 0x87, 0xff}, ""},               // 54, #5f0087
-	{color.RGBA{0x5f, 0x00, 0xaf, 0xff}, ""},               // 55, #5f00af
-	{color.RGBA{0x5f, 0x00, 0xd7, 0xff}, ""},               // 56, #5f00d7
-	{color.RGBA{0x5f, 0x00, 0xff, 0xff}, ""},               // 57, #5f00ff
-	{color.RGBA{0x5f, 0x5f, 0x00, 0xff}, ""},               // 58, #5f5f00
-	{color.RGBA{0x5f, 0x5f, 0x5f, 0xff}, ""},               // 59, #5f5f5f
-	{color.RGBA{0x5f, 0x5f, 0x87, 0xff}, ""},               // 60, #5f5f87
-	{color.RGBA{0x5f, 0x5f, 0xaf, 0xff}, ""},               // 61, #5f5faf
-	{color.RGBA{0x5f, 0x5f, 0xd7, 0xff}, ""},               // 62, #5f5fd7
-	{color.RGBA{0x5f, 0x5f, 0xff, 0xff}, ""},               // 63, #5f5fff
-	{color.RGBA{0x5f, 0x87, 0x00, 0xff}, ""},               // 64, #5f8700
-	{color.RGBA{0x5f, 0x87, 0x5f, 0xff}, ""},               // 65, #5f875f
-	{color.RGBA{0x5f, 0x87, 0x87, 0xff}, ""},               // 66, #5f8787
-	{color.RGBA{0x5f, 0x87, 0xaf, 0xff}, ""},               // 67, #5f87af
-	{color.RGBA{0x5f, 0x87, 0xd7, 0xff}, ""},               // 68, #5f87d7
-	{color.RGBA{0x5f, 0x87, 0xff, 0xff}, ""},               // 69, #5f87ff
-	{color.RGBA{0x5f, 0xaf, 0x00, 0xff}, ""},               // 70, #5faf00
-	{color.RGBA{0x5f, 0xaf, 0x5f, 0xff}, ""},               // 71, #5faf5f
-	{color.RGBA{0x5f, 0xaf, 0x87, 0xff}, ""},               // 72, #5faf87
-	{color.RGBA{0x5f, 0xaf, 0xaf, 0xff}, ""},               // 73, #5fafaf
-	{color.RGBA{0x5f, 0xaf, 0xd7, 0xff}, ""},               // 74, #5fafd7
-	{color.RGBA{0x5f, 0xaf, 0xff, 0xff}, ""},               // 75, #5fafff
-	{color.RGBA{0x5f, 0xd7, 0x00, 0xff}, ""},               // 76, #5fd700
-	{color.RGBA{0x5f, 0xd7, 0x5f, 0xff}, ""},               // 77, #5fd75f
-	{color.RGBA{0x5f, 0xd7, 0x87, 0xff}, ""},               // 78, #5fd787
-	{color.RGBA{0x5f, 0xd7, 0xaf, 0xff}, ""},               // 79, #5fd7af
-	{color.RGBA{0x5f, 0xd7, 0xd7, 0xff}, ""},               // 80, #5fd7d7
-	{color.RGBA{0x5f, 0xd7, 0xff, 0xff}, ""},               // 81, #5fd7ff
-	{color.RGBA{0x5f, 0xff, 0x00, 0xff}, ""},               // 82, #5fff00
-	{color.RGBA{0x5f, 0xff, 0x5f, 0xff}, ""},               // 83, #5fff5f
-	{color.RGBA{0x5f, 0xff, 0x87, 0xff}, ""},               // 84, #5fff87
-	{color.RGBA{0x5f, 0xff, 0xaf, 0xff}, ""},               // 85, #5fffaf
-	{color.RGBA{0x5f, 0xff, 0xd7, 0xff}, ""},               // 86, #5fffd7
-	{color.RGBA{0x5f, 0xff, 0xff, 0xff}, ""},               // 87, #5fffff
-	{color.RGBA{0x87, 0x00, 0x00, 0xff}, "red 4"},          // 88, #870000
-	{color.RGBA{0x87, 0x00, 0x5f, 0xff}, ""},               // 89, #87005f
-	{color.RGBA{0x87, 0x00, 0x87, 0xff}, ""},               // 90, #870087
-	{color.RGBA{0x87, 0x00, 0xaf, 0xff}, ""},               // 91, #8700af
-	{color.RGBA{0x87, 0x00, 0xd7, 0xff}, ""},               // 92, #8700d7
-	{color.RGBA{0x87, 0x00, 0xff, 0xff}, ""},               // 93, #8700ff
-	{color.RGBA{0x87, 0x5f, 0x00, 0xff}, ""},               // 94, #875f00
-	{color.RGBA{0x87, 0x5f, 0x5f, 0xff}, ""},               // 95, #875f5f
-	{color.RGBA{0x87, 0x5f, 0x87, 0xff}, ""},               // 96, #875f87
-	{color.RGBA{0x87, 0x5f, 0xaf, 0xff}, ""},               // 97, #875faf
-	{color.RGBA{0x87, 0x5f, 0xd7, 0xff}, ""},               // 98, #875fd7
-	{color.RGBA{0x87, 0x5f, 0xff, 0xff}, ""},               // 99, #875fff
-	{color.RGBA{0x87, 0x87, 0x00, 0xff}, ""},               // 100, #878700
-	{color.RGBA{0x87, 0x87, 0x5f, 0xff}, ""},               // 101, #87875f
-	{color.RGBA{0x87, 0x87, 0x87, 0xff}, ""},               // 102, #878787
-	{color.RGBA{0x87, 0x87, 0xaf, 0xff}, ""},               // 103, #8787af
-	{color.RGBA{0x87, 0x87, 0xd7, 0xff}, ""},               // 104, #8787d7
-	{color.RGBA{0x87, 0x87, 0xff, 0xff}, ""},               // 105, #8787ff
-	{color.RGBA{0x87, 0xaf, 0x00, 0xff}, ""},               // 106, #87af00
-	{color.RGBA{0x87, 0xaf, 0x5f, 0xff}, ""},               // 107, #87af5f
-	{color.RGBA{0x87, 0xaf, 0x87, 0xff}, ""},               // 108, #87af87
-	{color.RGBA{0x87, 0xaf, 0xaf, 0xff}, ""},               // 109, #87afaf
-	{color.RGBA{0x87, 0xaf, 0xd7, 0xff}, ""},               // 110, #87afd7
-	{color.RGBA{0x87, 0xaf, 0xff, 0xff}, ""},               // 111, #87afff
-	{color.RGBA{0x87, 0xd7, 0x00, 0xff}, ""},               // 112, #87d700
-	{color.RGBA{0x87, 0xd7, 0x5f, 0xff}, ""},               // 113, #87d75f
-	{color.RGBA{0x87, 0xd7, 0x87, 0xff}, ""},               // 114, #87d787
-	{color.RGBA{0x87, 0xd7, 0xaf, 0xff}, ""},               // 115, #87d7af
-	{color.RGBA{0x87, 0xd7, 0xd7, 0xff}, ""},               // 116, #87d7d7
-	{color.RGBA{0x87, 0xd7, 0xff, 0xff}, ""},               // 117, #87d7ff
-	{color.RGBA{0x87, 0xff, 0x00, 0xff}, ""},               // 118, #87ff00
-	{color.RGBA{0x87, 0xff, 0x5f, 0xff}, ""},               // 119, #87ff5f
-	{color.RGBA{0x87, 0xff, 0x87, 0xff}, ""},               // 120, #87ff87
-	{color.RGBA{0x87, 0xff, 0xaf, 0xff}, ""},               // 121, #87ffaf
-	{color.RGBA{0x87, 0xff, 0xd7, 0xff}, ""},               // 122, #87ffd7
-	{color.RGBA{0x87, 0xff, 0xff, 0xff}, ""},               // 123, #87ffff
-	{color.RGBA{0xaf, 0x00, 0x00, 0xff}, "red 3"},          // 124, #af0000
-	{color.RGBA{0xaf, 0x00, 0x5f, 0xff}, ""},               // 125, #af005f
-	{color.RGBA{0xaf, 0x00, 0x87, 0xff}, ""},               // 126, #af0087
-	{color.RGBA{0xaf, 0x00, 0xaf, 0xff}, ""},               // 127, #af00af
-	{color.RGBA{0xaf, 0x00, 0xd7, 0xff}, ""},               // 128, #af00d7
-	{color.RGBA{0xaf, 0x00, 0xff, 0xff}, ""},               // 129, #af00ff
-	{color.RGBA{0xaf, 0x5f, 0x00, 0xff}, ""},               // 130, #af5f00
-	{color.RGBA{0xaf, 0x5f, 0x5f, 0xff}, ""},               // 131, #af5f5f
-	{color.RGBA{0xaf, 0x5f, 0x87, 0xff}, ""},               // 132, #af5f87
-	{color.RGBA{0xaf, 0x5f, 0xaf, 0xff}, ""},               // 133, #af5faf
-	{color.RGBA{0xaf, 0x5f, 0xd7, 0xff}, ""},               // 134, #af5fd7
-	{color.RGBA{0xaf, 0x5f, 0xff, 0xff}, ""},               // 135, #af5fff
-	{color.RGBA{0xaf, 0x87, 0x00, 0xff}, ""},               // 136, #af8700
-	{color.RGBA{0xaf, 0x87, 0x5f, 0xff}, ""},               // 137, #af875f
-	{color.RGBA{0xaf, 0x87, 0x87, 0xff}, ""},               // 138, #af8787
-	{color.RGBA{0xaf, 0x87, 0xaf, 0xff}, ""},               // 139, #af87af
-	{color.RGBA{0xaf, 0x87, 0xd7, 0xff}, ""},               // 140, #af87d7
-	{color.RGBA{0xaf, 0x87, 0xff, 0xff}, ""},               // 141, #af87ff
-	{color.RGBA{0xaf, 0xaf, 0x00, 0xff}, ""},               // 142, #afaf00
-	{color.RGBA{0xaf, 0xaf, 0x5f, 0xff}, ""},               // 143, #afaf5f
-	{color.RGBA{0xaf, 0xaf, 0x87, 0xff}, ""},               // 144, #afaf87
-	{color.RGBA{0xaf, 0xaf, 0xaf, 0xff}, ""},               // 145, #afafaf
-	{color.RGBA{0xaf, 0xaf, 0xd7, 0xff}, ""},               // 146, #afafd7
-	{color.RGBA{0xaf, 0xaf, 0xff, 0xff}, ""},               // 147, #afafff
-	{color.RGBA{0xaf, 0xd7, 0x00, 0xff}, ""},               // 148, #afd700
-	{color.RGBA{0xaf, 0xd7, 0x5f, 0xff}, ""},               // 149, #afd75f
-	{color.RGBA{0xaf, 0xd7, 0x87, 0xff}, ""},               // 150, #afd787
-	{color.RGBA{0xaf, 0xd7, 0xaf, 0xff}, ""},               // 151, #afd7af
-	{color.RGBA{0xaf, 0xd7, 0xd7, 0xff}, ""},               // 152, #afd7d7
-	{color.RGBA{0xaf, 0xd7, 0xff, 0xff}, ""},               // 153, #afd7ff
-	{color.RGBA{0xaf, 0xff, 0x00, 0xff}, ""},               // 154, #afff00
-	{color.RGBA{0xaf, 0xff, 0x5f, 0xff}, ""},               // 155, #afff5f
-	{color.RGBA{0xaf, 0xff, 0x87, 0xff}, ""},               // 156, #afff87
-	{color.RGBA{0xaf, 0xff, 0xaf, 0xff}, ""},               // 157, #afffaf
-	{color.RGBA{0xaf, 0xff, 0xd7, 0xff}, ""},               // 158, #afffd7
-	{color.RGBA{0xaf, 0xff, 0xff, 0xff}, ""},               // 159, #afffff
-	{color.RGBA{0xd7, 0x00, 0x00, 0xff}, "red 2"},          // 160, #d70000
-	{color.RGBA{0xd7, 0x00, 0x5f, 0xff}, ""},               // 161, #d7005f
-	{color.RGBA{0xd7, 0x00, 0x87, 0xff}, ""},               // 162, #d70087
-	{color.RGBA{0xd7, 0x00, 0xaf, 0xff}, ""},               // 163, #d700af
-	{color.RGBA{0xd7, 0x00, 0xd7, 0xff}, ""},               // 164, #d700d7
-	{color.RGBA{0xd7, 0x00, 0xff, 0xff}, ""},               // 165, #d700ff
-	{color.RGBA{0xd7, 0x5f, 0x00, 0xff}, ""},               // 166, #d75f00
-	{color.RGBA{0xd7, 0x5f, 0x5f, 0xff}, ""},               // 167, #d75f5f
-	{color.RGBA{0xd7, 0x5f, 0x87, 0xff}, ""},               // 168, #d75f87
-	{color.RGBA{0xd7, 0x5f, 0xaf, 0xff}, ""},               // 169, #d75faf
-	{color.RGBA{0xd7, 0x5f, 0xd7, 0xff}, ""},               // 170, #d75fd7
-	{color.RGBA{0xd7, 0x5f, 0xff, 0xff}, ""},               // 171, #d75fff
-	{color.RGBA{0xd7, 0x87, 0x00, 0xff}, ""},               // 172, #d78700
-	{color.RGBA{0xd7, 0x87, 0x5f, 0xff}, ""},               // 173, #d7875f
-	{color.RGBA{0xd7, 0x87, 0x87, 0xff}, ""},               // 174, #d78787
-	{color.RGBA{0xd7, 0x87, 0xaf, 0xff}, ""},               // 175, #d787af
-	{color.RGBA{0xd7, 0x87, 0xd7, 0xff}, ""},               // 176, #d787d7
-	{color.RGBA{0xd7, 0x87, 0xff, 0xff}, ""},               // 177, #d787ff
-	{color.RGBA{0xd7, 0xaf, 0x00, 0xff}, ""},               // 178, #d7af00
-	{color.RGBA{0xd7, 0xaf, 0x5f, 0xff}, ""},               // 179, #d7af5f
-	{color.RGBA{0xd7, 0xaf, 0x87, 0xff}, ""},               // 180, #d7af87
-	{color.RGBA{0xd7, 0xaf, 0xaf, 0xff}, ""},               // 181, #d7afaf
-	{color.RGBA{0xd7, 0xaf, 0xd7, 0xff}, ""},               // 182, #d7afd7
-	{color.RGBA{0xd7, 0xaf, 0xff, 0xff}, ""},               // 183, #d7afff
-	{color.RGBA{0xd7, 0xd7, 0x00, 0xff}, ""},               // 184, #d7d700
-	{color.RGBA{0xd7, 0xd7, 0x5f, 0xff}, ""},               // 185, #d7d75f
-	{color.RGBA{0xd7, 0xd7, 0x87, 0xff}, ""},               // 186, #d7d787
-	{color.RGBA{0xd7, 0xd7, 0xaf, 0xff}, ""},               // 187, #d7d7af
-	{color.RGBA{0xd7, 0xd7, 0xd7, 0xff}, ""},               // 188, #d7d7d7
-	{color.RGBA{0xd7, 0xd7, 0xff, 0xff}, ""},               // 189, #d7d7ff
-	{color.RGBA{0xd7, 0xff, 0x00, 0xff}, ""},               // 190, #d7ff00
-	{color.RGBA{0xd7, 0xff, 0x5f, 0xff}, ""},               // 191, #d7ff5f
-	{color.RGBA{0xd7, 0xff, 0x87, 0xff}, ""},               // 192, #d7ff87
-	{color.RGBA{0xd7, 0xff, 0xaf, 0xff}, ""},               // 193, #d7ffaf
-	{color.RGBA{0xd7, 0xff, 0xd7, 0xff}, ""},               // 194, #d7ffd7
-	{color.RGBA{0xd7, 0xff, 0xff, 0xff}, ""},               // 195, #d7ffff
-	{color.RGBA{0xff, 0x00, 0x00, 0xff}, "red 1"},          // 196, #ff0000
-	{color.RGBA{0xff, 0x00, 0x5f, 0xff}, ""},               // 197, #ff005f
-	{color.RGBA{0xff, 0x00, 0x87, 0xff}, ""},               // 198, #ff0087
-	{color.RGBA{0xff, 0x00, 0xaf, 0xff}, ""},               // 199, #ff00af
-	{color.RGBA{0xff, 0x00, 0xd7, 0xff}, ""},               // 200, #ff00d7
-	{color.RGBA{0xff, 0x00, 0xff, 0xff}, ""},               // 201, #ff00ff
-	{color.RGBA{0xff, 0x5f, 0x00, 0xff}, ""},               // 202, #ff5f00
-	{color.RGBA{0xff, 0x5f, 0x5f, 0xff}, ""},               // 203, #ff5f5f
-	{color.RGBA{0xff, 0x5f, 0x87, 0xff}, ""},               // 204, #ff5f87
-	{color.RGBA{0xff, 0x5f, 0xaf, 0xff}, ""},               // 205, #ff5faf
-	{color.RGBA{0xff, 0x5f, 0xd7, 0xff}, ""},               // 206, #ff5fd7
-	{color.RGBA{0xff, 0x5f, 0xff, 0xff}, ""},               // 207, #ff5fff
-	{color.RGBA{0xff, 0x87, 0x00, 0xff}, ""},               // 208, #ff8700
-	{color.RGBA{0xff, 0x87, 0x5f, 0xff}, ""},               // 209, #ff875f
-	{color.RGBA{0xff, 0x87, 0x87, 0xff}, ""},               // 210, #ff8787
-	{color.RGBA{0xff, 0x87, 0xaf, 0xff}, ""},               // 211, #ff87af
-	{color.RGBA{0xff, 0x87, 0xd7, 0xff}, ""},               // 212, #ff87d7
-	{color.RGBA{0xff, 0x87, 0xff, 0xff}, ""},               // 213, #ff87ff
-	{color.RGBA{0xff, 0xaf, 0x00, 0xff}, ""},               // 214, #ffaf00
-	{color.RGBA{0xff, 0xaf, 0x5f, 0xff}, ""},               // 215, #ffaf5f
-	{color.RGBA{0xff, 0xaf, 0x87, 0xff}, ""},               // 216, #ffaf87
-	{color.RGBA{0xff, 0xaf, 0xaf, 0xff}, ""},               // 217, #ffafaf
-	{color.RGBA{0xff, 0xaf, 0xd7, 0xff}, ""},               // 218, #ffafd7
-	{color.RGBA{0xff, 0xaf, 0xff, 0xff}, ""},               // 219, #ffafff
-	{color.RGBA{0xff, 0xd7, 0x00, 0xff}, ""},               // 220, #ffd700
-	{color.RGBA{0xff, 0xd7, 0x5f, 0xff}, ""},               // 221, #ffd75f
-	{color.RGBA{0xff, 0xd7, 0x87, 0xff}, ""},               // 222, #ffd787
-	{color.RGBA{0xff, 0xd7, 0xaf, 0xff}, ""},               // 223, #ffd7af
-	{color.RGBA{0xff, 0xd7, 0xd7, 0xff}, ""},               // 224, #ffd7d7
-	{color.RGBA{0xff, 0xd7, 0xff, 0xff}, ""},               // 225, #ffd7ff
-	{color.RGBA{0xff, 0xff, 0x00, 0xff}, ""},               // 226, #ffff00
-	{color.RGBA{0xff, 0xff, 0x5f, 0xff}, ""},               // 227, #ffff5f
-	{color.RGBA{0xff, 0xff, 0x87, 0xff}, ""},               // 228, #ffff87
-	{color.RGBA{0xff, 0xff, 0xaf, 0xff}, ""},               // 229, #ffffaf
-	{color.RGBA{0xff, 0xff, 0xd7, 0xff}, ""},               // 230, #ffffd7
-	{color.RGBA{0xff, 0xff, 0xff, 0xff}, ""},               // 231, #ffffff
-	{color.RGBA{0x08, 0x08, 0x08, 0xff}, "gray 23"},        // 232, #080808
-	{color.RGBA{0x12, 0x12, 0x12, 0xff}, "gray 22"},        // 233, #121212
-	{color.RGBA{0x1c, 0x1c, 0x1c, 0xff}, "gray 21"},        // 234, #1c1c1c
-	{color.RGBA{0x26, 0x26, 0x26, 0xff}, "gray 20"},        // 235, #262626
-	{color.RGBA{0x30, 0x30, 0x30, 0xff}, "gray 19"},        // 236, #303030
-	{color.RGBA{0x3a, 0x3a, 0x3a, 0xff}, "gray 18"},        // 237, #3a3a3a
-	{color.RGBA{0x44, 0x44, 0x44, 0xff}, "gray 17"},        // 238, #444444
-	{color.RGBA{0x4e, 0x4e, 0x4e, 0xff}, "gray 16"},        // 239, #4e4e4e
-	{color.RGBA{0x58, 0x58, 0x58, 0xff}, "gray 15"},        // 240, #585858
-	{color.RGBA{0x62, 0x62, 0x62, 0xff}, "gray 14"},        // 241, #626262
-	{color.RGBA{0x6c, 0x6c, 0x6c, 0xff}, "gray 13"},        // 242, #6c6c6c
-	{color.RGBA{0x76, 0x76, 0x76, 0xff}, "gray 12"},        // 243, #767676
-	{color.RGBA{0x80, 0x80, 0x80, 0xff}, "gray 11"},        // 244, #808080
-	{color.RGBA{0x8a, 0x8a, 0x8a, 0xff}, "gray 10"},        // 245, #8a8a8a
-	{color.RGBA{0x94, 0x94, 0x94, 0xff}, "gray 9"},         // 246, #949494
-	{color.RGBA{0x9e, 0x9e, 0x9e, 0xff}, "gray 8"},         // 247, #9e9e9e
-	{color.RGBA{0xa8, 0xa8, 0xa8, 0xff}, "gray 7"},         // 248, #a8a8a8
-	{color.RGBA{0xb2, 0xb2, 0xb2, 0xff}, "gray 6"},         // 249, #b2b2b2
-	{color.RGBA{0xbc, 0xbc, 0xbc, 0xff}, "gray 5"},         // 250, #bcbcbc
-	{color.RGBA{0xc6, 0xc6, 0xc6, 0xff}, "gray 4"},         // 251, #c6c6c6
-	{color.RGBA{0xd0, 0xd0, 0xd0, 0xff}, "gray 3"},         // 252, #d0d0d0
-	{color.RGBA{0xda, 0xda, 0xda, 0xff}, "gray 2"},         // 253, #dadada
-	{color.RGBA{0xe4, 0xe4, 0xe4, 0xff}, "gray 1"},         // 254, #e4e4e4
-	{color.RGBA{0xee, 0xee, 0xee, 0xff}, "white"},          // 255, #eeeeee
+	&ColorProp{
+		Num:   0,
+		RGBA:  color.RGBA{0x00, 0x00, 0x00, 0xff},
+		HTML:  "#000000",
+		Names: []string{"black"},
+	},
+	&ColorProp{
+		Num:   1,
+		RGBA:  color.RGBA{0xcc, 0x00, 0x00, 0xff},
+		HTML:  "#cc0000",
+		Names: []string{"dark red 1"},
+	},
+	&ColorProp{
+		Num:   2,
+		RGBA:  color.RGBA{0x4e, 0x9a, 0x06, 0xff},
+		HTML:  "#4e9a06",
+		Names: []string{"mixed green 1"},
+	},
+	&ColorProp{
+		Num:   3,
+		RGBA:  color.RGBA{0xc4, 0xa0, 0x00, 0xff},
+		HTML:  "#c4a000",
+		Names: []string{"mixed orange 1"},
+	},
+	&ColorProp{
+		Num:   4,
+		RGBA:  color.RGBA{0x34, 0x65, 0xa4, 0xff},
+		HTML:  "#3465a4",
+		Names: []string{"mixed blue 1"},
+	},
+	&ColorProp{
+		Num:   5,
+		RGBA:  color.RGBA{0x75, 0x50, 0x7b, 0xff},
+		HTML:  "#75507b",
+		Names: []string{"purple 1"},
+	},
+	&ColorProp{
+		Num:   6,
+		RGBA:  color.RGBA{0x06, 0x98, 0x9a, 0xff},
+		HTML:  "#06989a",
+		Names: []string{"cyan 1"},
+	},
+	&ColorProp{
+		Num:   7,
+		RGBA:  color.RGBA{0xd3, 0xd7, 0xcf, 0xff},
+		HTML:  "#d3d7cf",
+		Names: []string{"light gray"},
+	},
+	&ColorProp{
+		Num:   8,
+		RGBA:  color.RGBA{0x55, 0x57, 0x53, 0xff},
+		HTML:  "#555753",
+		Names: []string{"dark gray"},
+	},
+	&ColorProp{
+		Num:   9,
+		RGBA:  color.RGBA{0xef, 0x29, 0x29, 0xff},
+		HTML:  "#ef2929",
+		Names: []string{"light red"},
+	},
+	&ColorProp{
+		Num:   10,
+		RGBA:  color.RGBA{0x8a, 0xe2, 0x34, 0xff},
+		HTML:  "#8ae234",
+		Names: []string{"light green"},
+	},
+	&ColorProp{
+		Num:   11,
+		RGBA:  color.RGBA{0xfc, 0xe9, 0x4f, 0xff},
+		HTML:  "#fce94f",
+		Names: []string{"yellow"},
+	},
+	&ColorProp{
+		Num:   12,
+		RGBA:  color.RGBA{0x72, 0x9f, 0xcf, 0xff},
+		HTML:  "#729fcf",
+		Names: []string{"light blue"},
+	},
+	&ColorProp{
+		Num:   13,
+		RGBA:  color.RGBA{0xad, 0x7f, 0xa8, 0xff},
+		HTML:  "#ad7fa8",
+		Names: []string{"light purple"},
+	},
+	&ColorProp{
+		Num:   14,
+		RGBA:  color.RGBA{0x34, 0xe2, 0xe2, 0xff},
+		HTML:  "#34e2e2",
+		Names: []string{"light cyan"},
+	},
+	&ColorProp{
+		Num:   15,
+		RGBA:  color.RGBA{0xee, 0xee, 0xec, 0xff},
+		HTML:  "#eeeeec",
+		Names: []string{"light gray 2"},
+	},
+	&ColorProp{
+		Num:   16,
+		RGBA:  color.RGBA{0x00, 0x00, 0x00, 0xff},
+		HTML:  "#000000",
+		Names: []string{"black"},
+	},
+	&ColorProp{
+		Num:   17,
+		RGBA:  color.RGBA{0x00, 0x00, 0x5f, 0xff},
+		HTML:  "#00005f",
+		Names: []string{"blue 4"},
+	},
+	&ColorProp{
+		Num:   18,
+		RGBA:  color.RGBA{0x00, 0x00, 0x87, 0xff},
+		HTML:  "#000087",
+		Names: []string{"blue 3"},
+	},
+	&ColorProp{
+		Num:   19,
+		RGBA:  color.RGBA{0x00, 0x00, 0xaf, 0xff},
+		HTML:  "#0000af",
+		Names: []string{"blue 2"},
+	},
+	&ColorProp{
+		Num:   20,
+		RGBA:  color.RGBA{0x00, 0x00, 0xd7, 0xff},
+		HTML:  "#0000d7",
+		Names: []string{"blue 1"},
+	},
+	&ColorProp{
+		Num:   21,
+		RGBA:  color.RGBA{0x00, 0x00, 0xff, 0xff},
+		HTML:  "#0000ff",
+		Names: []string{"blue"},
+	},
+	&ColorProp{
+		Num:   22,
+		RGBA:  color.RGBA{0x00, 0x5f, 0x00, 0xff},
+		HTML:  "#005f00",
+		Names: []string{"green 4"},
+	},
+	&ColorProp{
+		Num:   23,
+		RGBA:  color.RGBA{0x00, 0x5f, 0x5f, 0xff},
+		HTML:  "#005f5f",
+		Names: []string{"blue stone"},
+	},
+	&ColorProp{
+		Num:   24,
+		RGBA:  color.RGBA{0x00, 0x5f, 0x87, 0xff},
+		HTML:  "#005f87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   25,
+		RGBA:  color.RGBA{0x00, 0x5f, 0xaf, 0xff},
+		HTML:  "#005faf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   26,
+		RGBA:  color.RGBA{0x00, 0x5f, 0xd7, 0xff},
+		HTML:  "#005fd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   27,
+		RGBA:  color.RGBA{0x00, 0x5f, 0xff, 0xff},
+		HTML:  "#005fff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   28,
+		RGBA:  color.RGBA{0x00, 0x87, 0x00, 0xff},
+		HTML:  "#008700",
+		Names: []string{"green 3"},
+	},
+	&ColorProp{
+		Num:   29,
+		RGBA:  color.RGBA{0x00, 0x87, 0x5f, 0xff},
+		HTML:  "#00875f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   30,
+		RGBA:  color.RGBA{0x00, 0x87, 0x87, 0xff},
+		HTML:  "#008787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   31,
+		RGBA:  color.RGBA{0x00, 0x87, 0xaf, 0xff},
+		HTML:  "#0087af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   32,
+		RGBA:  color.RGBA{0x00, 0x87, 0xd7, 0xff},
+		HTML:  "#0087d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   33,
+		RGBA:  color.RGBA{0x00, 0x87, 0xff, 0xff},
+		HTML:  "#0087ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   34,
+		RGBA:  color.RGBA{0x00, 0xaf, 0x00, 0xff},
+		HTML:  "#00af00",
+		Names: []string{"green 2"},
+	},
+	&ColorProp{
+		Num:   35,
+		RGBA:  color.RGBA{0x00, 0xaf, 0x5f, 0xff},
+		HTML:  "#00af5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   36,
+		RGBA:  color.RGBA{0x00, 0xaf, 0x87, 0xff},
+		HTML:  "#00af87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   37,
+		RGBA:  color.RGBA{0x00, 0xaf, 0xaf, 0xff},
+		HTML:  "#00afaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   38,
+		RGBA:  color.RGBA{0x00, 0xaf, 0xd7, 0xff},
+		HTML:  "#00afd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   39,
+		RGBA:  color.RGBA{0x00, 0xaf, 0xff, 0xff},
+		HTML:  "#00afff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   40,
+		RGBA:  color.RGBA{0x00, 0xd7, 0x00, 0xff},
+		HTML:  "#00d700",
+		Names: []string{"green 1"},
+	},
+	&ColorProp{
+		Num:   41,
+		RGBA:  color.RGBA{0x00, 0xd7, 0x5f, 0xff},
+		HTML:  "#00d75f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   42,
+		RGBA:  color.RGBA{0x00, 0xd7, 0x87, 0xff},
+		HTML:  "#00d787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   43,
+		RGBA:  color.RGBA{0x00, 0xd7, 0xaf, 0xff},
+		HTML:  "#00d7af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   44,
+		RGBA:  color.RGBA{0x00, 0xd7, 0xd7, 0xff},
+		HTML:  "#00d7d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   45,
+		RGBA:  color.RGBA{0x00, 0xd7, 0xff, 0xff},
+		HTML:  "#00d7ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   46,
+		RGBA:  color.RGBA{0x00, 0xff, 0x00, 0xff},
+		HTML:  "#00ff00",
+		Names: []string{"green"},
+	},
+	&ColorProp{
+		Num:   47,
+		RGBA:  color.RGBA{0x00, 0xff, 0x5f, 0xff},
+		HTML:  "#00ff5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   48,
+		RGBA:  color.RGBA{0x00, 0xff, 0x87, 0xff},
+		HTML:  "#00ff87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   49,
+		RGBA:  color.RGBA{0x00, 0xff, 0xaf, 0xff},
+		HTML:  "#00ffaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   50,
+		RGBA:  color.RGBA{0x00, 0xff, 0xd7, 0xff},
+		HTML:  "#00ffd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   51,
+		RGBA:  color.RGBA{0x00, 0xff, 0xff, 0xff},
+		HTML:  "#00ffff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   52,
+		RGBA:  color.RGBA{0x5f, 0x00, 0x00, 0xff},
+		HTML:  "#5f0000",
+		Names: []string{"red 5"},
+	},
+	&ColorProp{
+		Num:   53,
+		RGBA:  color.RGBA{0x5f, 0x00, 0x5f, 0xff},
+		HTML:  "#5f005f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   54,
+		RGBA:  color.RGBA{0x5f, 0x00, 0x87, 0xff},
+		HTML:  "#5f0087",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   55,
+		RGBA:  color.RGBA{0x5f, 0x00, 0xaf, 0xff},
+		HTML:  "#5f00af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   56,
+		RGBA:  color.RGBA{0x5f, 0x00, 0xd7, 0xff},
+		HTML:  "#5f00d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   57,
+		RGBA:  color.RGBA{0x5f, 0x00, 0xff, 0xff},
+		HTML:  "#5f00ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   58,
+		RGBA:  color.RGBA{0x5f, 0x5f, 0x00, 0xff},
+		HTML:  "#5f5f00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   59,
+		RGBA:  color.RGBA{0x5f, 0x5f, 0x5f, 0xff},
+		HTML:  "#5f5f5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   60,
+		RGBA:  color.RGBA{0x5f, 0x5f, 0x87, 0xff},
+		HTML:  "#5f5f87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   61,
+		RGBA:  color.RGBA{0x5f, 0x5f, 0xaf, 0xff},
+		HTML:  "#5f5faf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   62,
+		RGBA:  color.RGBA{0x5f, 0x5f, 0xd7, 0xff},
+		HTML:  "#5f5fd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   63,
+		RGBA:  color.RGBA{0x5f, 0x5f, 0xff, 0xff},
+		HTML:  "#5f5fff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   64,
+		RGBA:  color.RGBA{0x5f, 0x87, 0x00, 0xff},
+		HTML:  "#5f8700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   65,
+		RGBA:  color.RGBA{0x5f, 0x87, 0x5f, 0xff},
+		HTML:  "#5f875f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   66,
+		RGBA:  color.RGBA{0x5f, 0x87, 0x87, 0xff},
+		HTML:  "#5f8787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   67,
+		RGBA:  color.RGBA{0x5f, 0x87, 0xaf, 0xff},
+		HTML:  "#5f87af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   68,
+		RGBA:  color.RGBA{0x5f, 0x87, 0xd7, 0xff},
+		HTML:  "#5f87d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   69,
+		RGBA:  color.RGBA{0x5f, 0x87, 0xff, 0xff},
+		HTML:  "#5f87ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   70,
+		RGBA:  color.RGBA{0x5f, 0xaf, 0x00, 0xff},
+		HTML:  "#5faf00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   71,
+		RGBA:  color.RGBA{0x5f, 0xaf, 0x5f, 0xff},
+		HTML:  "#5faf5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   72,
+		RGBA:  color.RGBA{0x5f, 0xaf, 0x87, 0xff},
+		HTML:  "#5faf87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   73,
+		RGBA:  color.RGBA{0x5f, 0xaf, 0xaf, 0xff},
+		HTML:  "#5fafaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   74,
+		RGBA:  color.RGBA{0x5f, 0xaf, 0xd7, 0xff},
+		HTML:  "#5fafd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   75,
+		RGBA:  color.RGBA{0x5f, 0xaf, 0xff, 0xff},
+		HTML:  "#5fafff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   76,
+		RGBA:  color.RGBA{0x5f, 0xd7, 0x00, 0xff},
+		HTML:  "#5fd700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   77,
+		RGBA:  color.RGBA{0x5f, 0xd7, 0x5f, 0xff},
+		HTML:  "#5fd75f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   78,
+		RGBA:  color.RGBA{0x5f, 0xd7, 0x87, 0xff},
+		HTML:  "#5fd787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   79,
+		RGBA:  color.RGBA{0x5f, 0xd7, 0xaf, 0xff},
+		HTML:  "#5fd7af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   80,
+		RGBA:  color.RGBA{0x5f, 0xd7, 0xd7, 0xff},
+		HTML:  "#5fd7d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   81,
+		RGBA:  color.RGBA{0x5f, 0xd7, 0xff, 0xff},
+		HTML:  "#5fd7ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   82,
+		RGBA:  color.RGBA{0x5f, 0xff, 0x00, 0xff},
+		HTML:  "#5fff00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   83,
+		RGBA:  color.RGBA{0x5f, 0xff, 0x5f, 0xff},
+		HTML:  "#5fff5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   84,
+		RGBA:  color.RGBA{0x5f, 0xff, 0x87, 0xff},
+		HTML:  "#5fff87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   85,
+		RGBA:  color.RGBA{0x5f, 0xff, 0xaf, 0xff},
+		HTML:  "#5fffaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   86,
+		RGBA:  color.RGBA{0x5f, 0xff, 0xd7, 0xff},
+		HTML:  "#5fffd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   87,
+		RGBA:  color.RGBA{0x5f, 0xff, 0xff, 0xff},
+		HTML:  "#5fffff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   88,
+		RGBA:  color.RGBA{0x87, 0x00, 0x00, 0xff},
+		HTML:  "#870000",
+		Names: []string{"red 4"},
+	},
+	&ColorProp{
+		Num:   89,
+		RGBA:  color.RGBA{0x87, 0x00, 0x5f, 0xff},
+		HTML:  "#87005f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   90,
+		RGBA:  color.RGBA{0x87, 0x00, 0x87, 0xff},
+		HTML:  "#870087",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   91,
+		RGBA:  color.RGBA{0x87, 0x00, 0xaf, 0xff},
+		HTML:  "#8700af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   92,
+		RGBA:  color.RGBA{0x87, 0x00, 0xd7, 0xff},
+		HTML:  "#8700d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   93,
+		RGBA:  color.RGBA{0x87, 0x00, 0xff, 0xff},
+		HTML:  "#8700ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   94,
+		RGBA:  color.RGBA{0x87, 0x5f, 0x00, 0xff},
+		HTML:  "#875f00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   95,
+		RGBA:  color.RGBA{0x87, 0x5f, 0x5f, 0xff},
+		HTML:  "#875f5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   96,
+		RGBA:  color.RGBA{0x87, 0x5f, 0x87, 0xff},
+		HTML:  "#875f87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   97,
+		RGBA:  color.RGBA{0x87, 0x5f, 0xaf, 0xff},
+		HTML:  "#875faf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   98,
+		RGBA:  color.RGBA{0x87, 0x5f, 0xd7, 0xff},
+		HTML:  "#875fd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   99,
+		RGBA:  color.RGBA{0x87, 0x5f, 0xff, 0xff},
+		HTML:  "#875fff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   100,
+		RGBA:  color.RGBA{0x87, 0x87, 0x00, 0xff},
+		HTML:  "#878700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   101,
+		RGBA:  color.RGBA{0x87, 0x87, 0x5f, 0xff},
+		HTML:  "#87875f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   102,
+		RGBA:  color.RGBA{0x87, 0x87, 0x87, 0xff},
+		HTML:  "#878787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   103,
+		RGBA:  color.RGBA{0x87, 0x87, 0xaf, 0xff},
+		HTML:  "#8787af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   104,
+		RGBA:  color.RGBA{0x87, 0x87, 0xd7, 0xff},
+		HTML:  "#8787d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   105,
+		RGBA:  color.RGBA{0x87, 0x87, 0xff, 0xff},
+		HTML:  "#8787ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   106,
+		RGBA:  color.RGBA{0x87, 0xaf, 0x00, 0xff},
+		HTML:  "#87af00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   107,
+		RGBA:  color.RGBA{0x87, 0xaf, 0x5f, 0xff},
+		HTML:  "#87af5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   108,
+		RGBA:  color.RGBA{0x87, 0xaf, 0x87, 0xff},
+		HTML:  "#87af87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   109,
+		RGBA:  color.RGBA{0x87, 0xaf, 0xaf, 0xff},
+		HTML:  "#87afaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   110,
+		RGBA:  color.RGBA{0x87, 0xaf, 0xd7, 0xff},
+		HTML:  "#87afd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   111,
+		RGBA:  color.RGBA{0x87, 0xaf, 0xff, 0xff},
+		HTML:  "#87afff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   112,
+		RGBA:  color.RGBA{0x87, 0xd7, 0x00, 0xff},
+		HTML:  "#87d700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   113,
+		RGBA:  color.RGBA{0x87, 0xd7, 0x5f, 0xff},
+		HTML:  "#87d75f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   114,
+		RGBA:  color.RGBA{0x87, 0xd7, 0x87, 0xff},
+		HTML:  "#87d787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   115,
+		RGBA:  color.RGBA{0x87, 0xd7, 0xaf, 0xff},
+		HTML:  "#87d7af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   116,
+		RGBA:  color.RGBA{0x87, 0xd7, 0xd7, 0xff},
+		HTML:  "#87d7d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   117,
+		RGBA:  color.RGBA{0x87, 0xd7, 0xff, 0xff},
+		HTML:  "#87d7ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   118,
+		RGBA:  color.RGBA{0x87, 0xff, 0x00, 0xff},
+		HTML:  "#87ff00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   119,
+		RGBA:  color.RGBA{0x87, 0xff, 0x5f, 0xff},
+		HTML:  "#87ff5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   120,
+		RGBA:  color.RGBA{0x87, 0xff, 0x87, 0xff},
+		HTML:  "#87ff87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   121,
+		RGBA:  color.RGBA{0x87, 0xff, 0xaf, 0xff},
+		HTML:  "#87ffaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   122,
+		RGBA:  color.RGBA{0x87, 0xff, 0xd7, 0xff},
+		HTML:  "#87ffd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   123,
+		RGBA:  color.RGBA{0x87, 0xff, 0xff, 0xff},
+		HTML:  "#87ffff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   124,
+		RGBA:  color.RGBA{0xaf, 0x00, 0x00, 0xff},
+		HTML:  "#af0000",
+		Names: []string{"red 3"},
+	},
+	&ColorProp{
+		Num:   125,
+		RGBA:  color.RGBA{0xaf, 0x00, 0x5f, 0xff},
+		HTML:  "#af005f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   126,
+		RGBA:  color.RGBA{0xaf, 0x00, 0x87, 0xff},
+		HTML:  "#af0087",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   127,
+		RGBA:  color.RGBA{0xaf, 0x00, 0xaf, 0xff},
+		HTML:  "#af00af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   128,
+		RGBA:  color.RGBA{0xaf, 0x00, 0xd7, 0xff},
+		HTML:  "#af00d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   129,
+		RGBA:  color.RGBA{0xaf, 0x00, 0xff, 0xff},
+		HTML:  "#af00ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   130,
+		RGBA:  color.RGBA{0xaf, 0x5f, 0x00, 0xff},
+		HTML:  "#af5f00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   131,
+		RGBA:  color.RGBA{0xaf, 0x5f, 0x5f, 0xff},
+		HTML:  "#af5f5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   132,
+		RGBA:  color.RGBA{0xaf, 0x5f, 0x87, 0xff},
+		HTML:  "#af5f87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   133,
+		RGBA:  color.RGBA{0xaf, 0x5f, 0xaf, 0xff},
+		HTML:  "#af5faf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   134,
+		RGBA:  color.RGBA{0xaf, 0x5f, 0xd7, 0xff},
+		HTML:  "#af5fd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   135,
+		RGBA:  color.RGBA{0xaf, 0x5f, 0xff, 0xff},
+		HTML:  "#af5fff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   136,
+		RGBA:  color.RGBA{0xaf, 0x87, 0x00, 0xff},
+		HTML:  "#af8700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   137,
+		RGBA:  color.RGBA{0xaf, 0x87, 0x5f, 0xff},
+		HTML:  "#af875f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   138,
+		RGBA:  color.RGBA{0xaf, 0x87, 0x87, 0xff},
+		HTML:  "#af8787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   139,
+		RGBA:  color.RGBA{0xaf, 0x87, 0xaf, 0xff},
+		HTML:  "#af87af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   140,
+		RGBA:  color.RGBA{0xaf, 0x87, 0xd7, 0xff},
+		HTML:  "#af87d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   141,
+		RGBA:  color.RGBA{0xaf, 0x87, 0xff, 0xff},
+		HTML:  "#af87ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   142,
+		RGBA:  color.RGBA{0xaf, 0xaf, 0x00, 0xff},
+		HTML:  "#afaf00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   143,
+		RGBA:  color.RGBA{0xaf, 0xaf, 0x5f, 0xff},
+		HTML:  "#afaf5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   144,
+		RGBA:  color.RGBA{0xaf, 0xaf, 0x87, 0xff},
+		HTML:  "#afaf87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   145,
+		RGBA:  color.RGBA{0xaf, 0xaf, 0xaf, 0xff},
+		HTML:  "#afafaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   146,
+		RGBA:  color.RGBA{0xaf, 0xaf, 0xd7, 0xff},
+		HTML:  "#afafd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   147,
+		RGBA:  color.RGBA{0xaf, 0xaf, 0xff, 0xff},
+		HTML:  "#afafff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   148,
+		RGBA:  color.RGBA{0xaf, 0xd7, 0x00, 0xff},
+		HTML:  "#afd700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   149,
+		RGBA:  color.RGBA{0xaf, 0xd7, 0x5f, 0xff},
+		HTML:  "#afd75f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   150,
+		RGBA:  color.RGBA{0xaf, 0xd7, 0x87, 0xff},
+		HTML:  "#afd787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   151,
+		RGBA:  color.RGBA{0xaf, 0xd7, 0xaf, 0xff},
+		HTML:  "#afd7af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   152,
+		RGBA:  color.RGBA{0xaf, 0xd7, 0xd7, 0xff},
+		HTML:  "#afd7d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   153,
+		RGBA:  color.RGBA{0xaf, 0xd7, 0xff, 0xff},
+		HTML:  "#afd7ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   154,
+		RGBA:  color.RGBA{0xaf, 0xff, 0x00, 0xff},
+		HTML:  "#afff00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   155,
+		RGBA:  color.RGBA{0xaf, 0xff, 0x5f, 0xff},
+		HTML:  "#afff5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   156,
+		RGBA:  color.RGBA{0xaf, 0xff, 0x87, 0xff},
+		HTML:  "#afff87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   157,
+		RGBA:  color.RGBA{0xaf, 0xff, 0xaf, 0xff},
+		HTML:  "#afffaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   158,
+		RGBA:  color.RGBA{0xaf, 0xff, 0xd7, 0xff},
+		HTML:  "#afffd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   159,
+		RGBA:  color.RGBA{0xaf, 0xff, 0xff, 0xff},
+		HTML:  "#afffff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   160,
+		RGBA:  color.RGBA{0xd7, 0x00, 0x00, 0xff},
+		HTML:  "#d70000",
+		Names: []string{"red 2"},
+	},
+	&ColorProp{
+		Num:   161,
+		RGBA:  color.RGBA{0xd7, 0x00, 0x5f, 0xff},
+		HTML:  "#d7005f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   162,
+		RGBA:  color.RGBA{0xd7, 0x00, 0x87, 0xff},
+		HTML:  "#d70087",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   163,
+		RGBA:  color.RGBA{0xd7, 0x00, 0xaf, 0xff},
+		HTML:  "#d700af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   164,
+		RGBA:  color.RGBA{0xd7, 0x00, 0xd7, 0xff},
+		HTML:  "#d700d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   165,
+		RGBA:  color.RGBA{0xd7, 0x00, 0xff, 0xff},
+		HTML:  "#d700ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   166,
+		RGBA:  color.RGBA{0xd7, 0x5f, 0x00, 0xff},
+		HTML:  "#d75f00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   167,
+		RGBA:  color.RGBA{0xd7, 0x5f, 0x5f, 0xff},
+		HTML:  "#d75f5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   168,
+		RGBA:  color.RGBA{0xd7, 0x5f, 0x87, 0xff},
+		HTML:  "#d75f87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   169,
+		RGBA:  color.RGBA{0xd7, 0x5f, 0xaf, 0xff},
+		HTML:  "#d75faf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   170,
+		RGBA:  color.RGBA{0xd7, 0x5f, 0xd7, 0xff},
+		HTML:  "#d75fd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   171,
+		RGBA:  color.RGBA{0xd7, 0x5f, 0xff, 0xff},
+		HTML:  "#d75fff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   172,
+		RGBA:  color.RGBA{0xd7, 0x87, 0x00, 0xff},
+		HTML:  "#d78700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   173,
+		RGBA:  color.RGBA{0xd7, 0x87, 0x5f, 0xff},
+		HTML:  "#d7875f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   174,
+		RGBA:  color.RGBA{0xd7, 0x87, 0x87, 0xff},
+		HTML:  "#d78787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   175,
+		RGBA:  color.RGBA{0xd7, 0x87, 0xaf, 0xff},
+		HTML:  "#d787af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   176,
+		RGBA:  color.RGBA{0xd7, 0x87, 0xd7, 0xff},
+		HTML:  "#d787d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   177,
+		RGBA:  color.RGBA{0xd7, 0x87, 0xff, 0xff},
+		HTML:  "#d787ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   178,
+		RGBA:  color.RGBA{0xd7, 0xaf, 0x00, 0xff},
+		HTML:  "#d7af00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   179,
+		RGBA:  color.RGBA{0xd7, 0xaf, 0x5f, 0xff},
+		HTML:  "#d7af5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   180,
+		RGBA:  color.RGBA{0xd7, 0xaf, 0x87, 0xff},
+		HTML:  "#d7af87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   181,
+		RGBA:  color.RGBA{0xd7, 0xaf, 0xaf, 0xff},
+		HTML:  "#d7afaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   182,
+		RGBA:  color.RGBA{0xd7, 0xaf, 0xd7, 0xff},
+		HTML:  "#d7afd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   183,
+		RGBA:  color.RGBA{0xd7, 0xaf, 0xff, 0xff},
+		HTML:  "#d7afff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   184,
+		RGBA:  color.RGBA{0xd7, 0xd7, 0x00, 0xff},
+		HTML:  "#d7d700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   185,
+		RGBA:  color.RGBA{0xd7, 0xd7, 0x5f, 0xff},
+		HTML:  "#d7d75f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   186,
+		RGBA:  color.RGBA{0xd7, 0xd7, 0x87, 0xff},
+		HTML:  "#d7d787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   187,
+		RGBA:  color.RGBA{0xd7, 0xd7, 0xaf, 0xff},
+		HTML:  "#d7d7af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   188,
+		RGBA:  color.RGBA{0xd7, 0xd7, 0xd7, 0xff},
+		HTML:  "#d7d7d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   189,
+		RGBA:  color.RGBA{0xd7, 0xd7, 0xff, 0xff},
+		HTML:  "#d7d7ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   190,
+		RGBA:  color.RGBA{0xd7, 0xff, 0x00, 0xff},
+		HTML:  "#d7ff00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   191,
+		RGBA:  color.RGBA{0xd7, 0xff, 0x5f, 0xff},
+		HTML:  "#d7ff5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   192,
+		RGBA:  color.RGBA{0xd7, 0xff, 0x87, 0xff},
+		HTML:  "#d7ff87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   193,
+		RGBA:  color.RGBA{0xd7, 0xff, 0xaf, 0xff},
+		HTML:  "#d7ffaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   194,
+		RGBA:  color.RGBA{0xd7, 0xff, 0xd7, 0xff},
+		HTML:  "#d7ffd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   195,
+		RGBA:  color.RGBA{0xd7, 0xff, 0xff, 0xff},
+		HTML:  "#d7ffff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   196,
+		RGBA:  color.RGBA{0xff, 0x00, 0x00, 0xff},
+		HTML:  "#ff0000",
+		Names: []string{"red 1"},
+	},
+	&ColorProp{
+		Num:   197,
+		RGBA:  color.RGBA{0xff, 0x00, 0x5f, 0xff},
+		HTML:  "#ff005f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   198,
+		RGBA:  color.RGBA{0xff, 0x00, 0x87, 0xff},
+		HTML:  "#ff0087",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   199,
+		RGBA:  color.RGBA{0xff, 0x00, 0xaf, 0xff},
+		HTML:  "#ff00af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   200,
+		RGBA:  color.RGBA{0xff, 0x00, 0xd7, 0xff},
+		HTML:  "#ff00d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   201,
+		RGBA:  color.RGBA{0xff, 0x00, 0xff, 0xff},
+		HTML:  "#ff00ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   202,
+		RGBA:  color.RGBA{0xff, 0x5f, 0x00, 0xff},
+		HTML:  "#ff5f00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   203,
+		RGBA:  color.RGBA{0xff, 0x5f, 0x5f, 0xff},
+		HTML:  "#ff5f5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   204,
+		RGBA:  color.RGBA{0xff, 0x5f, 0x87, 0xff},
+		HTML:  "#ff5f87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   205,
+		RGBA:  color.RGBA{0xff, 0x5f, 0xaf, 0xff},
+		HTML:  "#ff5faf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   206,
+		RGBA:  color.RGBA{0xff, 0x5f, 0xd7, 0xff},
+		HTML:  "#ff5fd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   207,
+		RGBA:  color.RGBA{0xff, 0x5f, 0xff, 0xff},
+		HTML:  "#ff5fff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   208,
+		RGBA:  color.RGBA{0xff, 0x87, 0x00, 0xff},
+		HTML:  "#ff8700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   209,
+		RGBA:  color.RGBA{0xff, 0x87, 0x5f, 0xff},
+		HTML:  "#ff875f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   210,
+		RGBA:  color.RGBA{0xff, 0x87, 0x87, 0xff},
+		HTML:  "#ff8787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   211,
+		RGBA:  color.RGBA{0xff, 0x87, 0xaf, 0xff},
+		HTML:  "#ff87af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   212,
+		RGBA:  color.RGBA{0xff, 0x87, 0xd7, 0xff},
+		HTML:  "#ff87d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   213,
+		RGBA:  color.RGBA{0xff, 0x87, 0xff, 0xff},
+		HTML:  "#ff87ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   214,
+		RGBA:  color.RGBA{0xff, 0xaf, 0x00, 0xff},
+		HTML:  "#ffaf00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   215,
+		RGBA:  color.RGBA{0xff, 0xaf, 0x5f, 0xff},
+		HTML:  "#ffaf5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   216,
+		RGBA:  color.RGBA{0xff, 0xaf, 0x87, 0xff},
+		HTML:  "#ffaf87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   217,
+		RGBA:  color.RGBA{0xff, 0xaf, 0xaf, 0xff},
+		HTML:  "#ffafaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   218,
+		RGBA:  color.RGBA{0xff, 0xaf, 0xd7, 0xff},
+		HTML:  "#ffafd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   219,
+		RGBA:  color.RGBA{0xff, 0xaf, 0xff, 0xff},
+		HTML:  "#ffafff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   220,
+		RGBA:  color.RGBA{0xff, 0xd7, 0x00, 0xff},
+		HTML:  "#ffd700",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   221,
+		RGBA:  color.RGBA{0xff, 0xd7, 0x5f, 0xff},
+		HTML:  "#ffd75f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   222,
+		RGBA:  color.RGBA{0xff, 0xd7, 0x87, 0xff},
+		HTML:  "#ffd787",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   223,
+		RGBA:  color.RGBA{0xff, 0xd7, 0xaf, 0xff},
+		HTML:  "#ffd7af",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   224,
+		RGBA:  color.RGBA{0xff, 0xd7, 0xd7, 0xff},
+		HTML:  "#ffd7d7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   225,
+		RGBA:  color.RGBA{0xff, 0xd7, 0xff, 0xff},
+		HTML:  "#ffd7ff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   226,
+		RGBA:  color.RGBA{0xff, 0xff, 0x00, 0xff},
+		HTML:  "#ffff00",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   227,
+		RGBA:  color.RGBA{0xff, 0xff, 0x5f, 0xff},
+		HTML:  "#ffff5f",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   228,
+		RGBA:  color.RGBA{0xff, 0xff, 0x87, 0xff},
+		HTML:  "#ffff87",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   229,
+		RGBA:  color.RGBA{0xff, 0xff, 0xaf, 0xff},
+		HTML:  "#ffffaf",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   230,
+		RGBA:  color.RGBA{0xff, 0xff, 0xd7, 0xff},
+		HTML:  "#ffffd7",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   231,
+		RGBA:  color.RGBA{0xff, 0xff, 0xff, 0xff},
+		HTML:  "#ffffff",
+		Names: []string{""},
+	},
+	&ColorProp{
+		Num:   232,
+		RGBA:  color.RGBA{0x08, 0x08, 0x08, 0xff},
+		HTML:  "#080808",
+		Names: []string{"gray 23"},
+	},
+	&ColorProp{
+		Num:   233,
+		RGBA:  color.RGBA{0x12, 0x12, 0x12, 0xff},
+		HTML:  "#121212",
+		Names: []string{"gray 22"},
+	},
+	&ColorProp{
+		Num:   234,
+		RGBA:  color.RGBA{0x1c, 0x1c, 0x1c, 0xff},
+		HTML:  "#1c1c1c",
+		Names: []string{"gray 21"},
+	},
+	&ColorProp{
+		Num:   235,
+		RGBA:  color.RGBA{0x26, 0x26, 0x26, 0xff},
+		HTML:  "#262626",
+		Names: []string{"gray 20"},
+	},
+	&ColorProp{
+		Num:   236,
+		RGBA:  color.RGBA{0x30, 0x30, 0x30, 0xff},
+		HTML:  "#303030",
+		Names: []string{"gray 19"},
+	},
+	&ColorProp{
+		Num:   237,
+		RGBA:  color.RGBA{0x3a, 0x3a, 0x3a, 0xff},
+		HTML:  "#3a3a3a",
+		Names: []string{"gray 18"},
+	},
+	&ColorProp{
+		Num:   238,
+		RGBA:  color.RGBA{0x44, 0x44, 0x44, 0xff},
+		HTML:  "#444444",
+		Names: []string{"gray 17"},
+	},
+	&ColorProp{
+		Num:   239,
+		RGBA:  color.RGBA{0x4e, 0x4e, 0x4e, 0xff},
+		HTML:  "#4e4e4e",
+		Names: []string{"gray 16"},
+	},
+	&ColorProp{
+		Num:   240,
+		RGBA:  color.RGBA{0x58, 0x58, 0x58, 0xff},
+		HTML:  "#585858",
+		Names: []string{"gray 15"},
+	},
+	&ColorProp{
+		Num:   241,
+		RGBA:  color.RGBA{0x62, 0x62, 0x62, 0xff},
+		HTML:  "#626262",
+		Names: []string{"gray 14"},
+	},
+	&ColorProp{
+		Num:   242,
+		RGBA:  color.RGBA{0x6c, 0x6c, 0x6c, 0xff},
+		HTML:  "#6c6c6c",
+		Names: []string{"gray 13"},
+	},
+	&ColorProp{
+		Num:   243,
+		RGBA:  color.RGBA{0x76, 0x76, 0x76, 0xff},
+		HTML:  "#767676",
+		Names: []string{"gray 12"},
+	},
+	&ColorProp{
+		Num:   244,
+		RGBA:  color.RGBA{0x80, 0x80, 0x80, 0xff},
+		HTML:  "#808080",
+		Names: []string{"gray 11"},
+	},
+	&ColorProp{
+		Num:   245,
+		RGBA:  color.RGBA{0x8a, 0x8a, 0x8a, 0xff},
+		HTML:  "#8a8a8a",
+		Names: []string{"gray 10"},
+	},
+	&ColorProp{
+		Num:   246,
+		RGBA:  color.RGBA{0x94, 0x94, 0x94, 0xff},
+		HTML:  "#949494",
+		Names: []string{"gray 9"},
+	},
+	&ColorProp{
+		Num:   247,
+		RGBA:  color.RGBA{0x9e, 0x9e, 0x9e, 0xff},
+		HTML:  "#9e9e9e",
+		Names: []string{"gray 8"},
+	},
+	&ColorProp{
+		Num:   248,
+		RGBA:  color.RGBA{0xa8, 0xa8, 0xa8, 0xff},
+		HTML:  "#a8a8a8",
+		Names: []string{"gray 7"},
+	},
+	&ColorProp{
+		Num:   249,
+		RGBA:  color.RGBA{0xb2, 0xb2, 0xb2, 0xff},
+		HTML:  "#b2b2b2",
+		Names: []string{"gray 6"},
+	},
+	&ColorProp{
+		Num:   250,
+		RGBA:  color.RGBA{0xbc, 0xbc, 0xbc, 0xff},
+		HTML:  "#bcbcbc",
+		Names: []string{"gray 5"},
+	},
+	&ColorProp{
+		Num:   251,
+		RGBA:  color.RGBA{0xc6, 0xc6, 0xc6, 0xff},
+		HTML:  "#c6c6c6",
+		Names: []string{"gray 4"},
+	},
+	&ColorProp{
+		Num:   252,
+		RGBA:  color.RGBA{0xd0, 0xd0, 0xd0, 0xff},
+		HTML:  "#d0d0d0",
+		Names: []string{"gray 3"},
+	},
+	&ColorProp{
+		Num:   253,
+		RGBA:  color.RGBA{0xda, 0xda, 0xda, 0xff},
+		HTML:  "#dadada",
+		Names: []string{"gray 2"},
+	},
+	&ColorProp{
+		Num:   254,
+		RGBA:  color.RGBA{0xe4, 0xe4, 0xe4, 0xff},
+		HTML:  "#e4e4e4",
+		Names: []string{"gray 1"},
+	},
+	&ColorProp{
+		Num:   255,
+		RGBA:  color.RGBA{0xee, 0xee, 0xee, 0xff},
+		HTML:  "#eeeeee",
+		Names: []string{"white"},
+	},
 }

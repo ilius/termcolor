@@ -15,9 +15,9 @@ func main() {
 		panic(err)
 	}
 	defer file.Close()
-	fmt.Fprintf(file, "package termcolor\n\nvar ColorNames = []string{\n")
+	fmt.Fprintf(file, "package termcolor\n\nvar ColorNames = [][]string{\n")
 	for _, c := range termcolor.Colors {
-		fmt.Fprintf(file, "\t%#v,\n", c.Name)
+		fmt.Fprintf(file, "\t%#v,\n", c.Names)
 	}
 	fmt.Fprintf(file, "}\n")
 }
