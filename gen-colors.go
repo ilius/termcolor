@@ -60,7 +60,7 @@ func rgbToHtml(r int, g int, b int) string {
 }
 
 func main() {
-	file, err := os.Create("colors-new.go")
+	file, err := os.Create("colors.go")
 	if err != nil {
 		panic(err)
 	}
