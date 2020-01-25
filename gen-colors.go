@@ -55,6 +55,10 @@ func getRGB(n int) (int, int, int) {
 	return red, green, blue
 }
 
+func rgbToHtml(r int, g int, b int) string {
+	return fmt.Sprintf("#%.2x%.2x%.2x", r, g, b)
+}
+
 func main() {
 	file, err := os.Create("colors-new.go")
 	if err != nil {
@@ -72,15 +76,18 @@ type ColorProp struct {
 	Name string
 }
 
-var Colors = [256]*ColorProp{`)
+var Colors = [256]*ColorProp{
+`)
 	for num, name := range termcolor.ColorNames {
 		red, green, blue := getRGB(num)
+		htmlColor := rgbToHtml(red, green, blue)
 		fmt.Fprintf(
 			file,
-			"\t{color.RGBA{0x%02x, 0x%02x, 0x%02x, 0xff}, %#v}, // %d \n",
+			"\t{color.RGBA{0x%02x, 0x%02x, 0x%02x, 0xff}, %#v}, // %d, %s \n",
 			red, green, blue,
 			name,
 			num,
+			htmlColor,
 		)
 	}
 	fmt.Fprintf(file, "}\n")
