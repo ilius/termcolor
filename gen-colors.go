@@ -9,10 +9,6 @@ import (
 	"github.com/ilius/termcolor"
 )
 
-func rgbToHtml(r int, g int, b int) string {
-	return fmt.Sprintf("#%.2x%.2x%.2x", r, g, b)
-}
-
 func main() {
 	file, err := os.Create("colors.go")
 	if err != nil {
@@ -36,7 +32,7 @@ var Colors = [256]*ColorProp{
 `)
 	for num, names := range termcolor.ColorNames {
 		red, green, blue := termcolor.NumberToRGB(num)
-		htmlColor := rgbToHtml(red, green, blue)
+		htmlColor := termcolor.RGBToHtml(red, green, blue)
 		fmt.Fprintf(
 			file,
 			"\t&ColorProp{\n"+
