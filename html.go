@@ -8,7 +8,7 @@ import (
 
 var errInvalidFormat = errors.New("invalid format")
 
-func RGBToHtml(r int, g int, b int) string {
+func RGBToHexColor(r int, g int, b int) string {
 	return fmt.Sprintf("#%.2x%.2x%.2x", r, g, b)
 }
 

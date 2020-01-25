@@ -32,7 +32,7 @@ var Colors = [256]*ColorProp{
 `)
 	for num, names := range termcolor.ColorNames {
 		red, green, blue := termcolor.NumberToRGB(num)
-		htmlColor := termcolor.RGBToHtml(red, green, blue)
+		htmlColor := termcolor.RGBToHexColor(red, green, blue)
 		fmt.Fprintf(
 			file,
 			"\t&ColorProp{\n"+
