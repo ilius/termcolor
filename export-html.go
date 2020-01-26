@@ -19,6 +19,7 @@ func main() {
 
 	// tableWidth := "%50"
 	tableWidth := "600px"
+	codeColWidth := "60px"
 	bgColor := "#252525"
 	fgColor := "#ffffff"
 
@@ -27,9 +28,9 @@ func main() {
 	fmt.Fprintf(fp, "<table width=\"%s\">\n", tableWidth)
 	fmt.Fprintf(fp, "\t<tr>\n\t\t"+strings.Join([]string{
 		`<th width="%%30">Color</th>`,
-		`<th width="%%10">Code</th>`,
+		`<th width="%s" align="center">#</th>`,
 		`<th width="%%30">HTML</th>`,
-	}, "\n\t\t"))
+	}, "\n\t\t"), codeColWidth)
 
 	for num, c := range termcolor.Colors {
 		if num != int(c.Num) {
@@ -37,7 +38,7 @@ func main() {
 		}
 		fmt.Fprintf(fp, "\t<tr>\n")
 		fmt.Fprintf(fp, "\t\t"+`<td width="%%30" style="background-color:%s">&nbsp;</th>`, c.HTML)
-		fmt.Fprintf(fp, "\t\t"+`<td width="%%10">%d</th>`, num)
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%d</th>`, codeColWidth, num)
 		fmt.Fprintf(fp, "\t\t"+`<td width="%%30">%s</th>`, c.HTML)
 	}
 
