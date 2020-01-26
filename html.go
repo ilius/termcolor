@@ -12,6 +12,10 @@ func RGBToHexColor(r int, g int, b int) string {
 	return fmt.Sprintf("#%.2x%.2x%.2x", r, g, b)
 }
 
+func RGBAToHexColor(c color.RGBA) string {
+	return fmt.Sprintf("#%.2x%.2x%.2x", c.R, c.G, c.B)
+}
+
 func ParseHexColor(s string) (c *color.RGBA, err error) {
 	c = &color.RGBA{}
 	c.A = 0xff
