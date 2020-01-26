@@ -160,7 +160,7 @@ var Colors = [256]*ColorProp{
 		Num:   24,
 		RGBA:  color.RGBA{0, 95, 135, 255},
 		Hex:   "#005f87",
-		Names: []string{},
+		Names: []string{"orient"},
 	},
 	&ColorProp{
 		Num:   25,
@@ -406,7 +406,7 @@ var Colors = [256]*ColorProp{
 		Num:   65,
 		RGBA:  color.RGBA{95, 135, 95, 255},
 		Hex:   "#5f875f",
-		Names: []string{},
+		Names: []string{"glade green"},
 	},
 	&ColorProp{
 		Num:   66,
@@ -460,7 +460,7 @@ var Colors = [256]*ColorProp{
 		Num:   74,
 		RGBA:  color.RGBA{95, 175, 215, 255},
 		Hex:   "#5fafd7",
-		Names: []string{},
+		Names: []string{"tradewind"},
 	},
 	&ColorProp{
 		Num:   75,
@@ -574,7 +574,7 @@ var Colors = [256]*ColorProp{
 		Num:   93,
 		RGBA:  color.RGBA{135, 0, 255, 255},
 		Hex:   "#8700ff",
-		Names: []string{},
+		Names: []string{"electric violet"},
 	},
 	&ColorProp{
 		Num:   94,
@@ -622,7 +622,7 @@ var Colors = [256]*ColorProp{
 		Num:   101,
 		RGBA:  color.RGBA{135, 135, 95, 255},
 		Hex:   "#87875f",
-		Names: []string{},
+		Names: []string{"clay creek"},
 	},
 	&ColorProp{
 		Num:   102,
@@ -760,7 +760,7 @@ var Colors = [256]*ColorProp{
 		Num:   124,
 		RGBA:  color.RGBA{175, 0, 0, 255},
 		Hex:   "#af0000",
-		Names: []string{"red 3"},
+		Names: []string{"red 3", "bright red"},
 	},
 	&ColorProp{
 		Num:   125,
@@ -886,7 +886,7 @@ var Colors = [256]*ColorProp{
 		Num:   145,
 		RGBA:  color.RGBA{175, 175, 175, 255},
 		Hex:   "#afafaf",
-		Names: []string{},
+		Names: []string{"silver chalice"},
 	},
 	&ColorProp{
 		Num:   146,
@@ -1180,7 +1180,7 @@ var Colors = [256]*ColorProp{
 		Num:   194,
 		RGBA:  color.RGBA{215, 255, 215, 255},
 		Hex:   "#d7ffd7",
-		Names: []string{},
+		Names: []string{"snowy mint"},
 	},
 	&ColorProp{
 		Num:   195,
@@ -1276,7 +1276,7 @@ var Colors = [256]*ColorProp{
 		Num:   210,
 		RGBA:  color.RGBA{255, 135, 135, 255},
 		Hex:   "#ff8787",
-		Names: []string{},
+		Names: []string{"geraldine"},
 	},
 	&ColorProp{
 		Num:   211,
@@ -1318,7 +1318,7 @@ var Colors = [256]*ColorProp{
 		Num:   217,
 		RGBA:  color.RGBA{255, 175, 175, 255},
 		Hex:   "#ffafaf",
-		Names: []string{},
+		Names: []string{"cornflower lilac"},
 	},
 	&ColorProp{
 		Num:   218,
@@ -1342,7 +1342,7 @@ var Colors = [256]*ColorProp{
 		Num:   221,
 		RGBA:  color.RGBA{255, 215, 95, 255},
 		Hex:   "#ffd75f",
-		Names: []string{},
+		Names: []string{"dandelion"},
 	},
 	&ColorProp{
 		Num:   222,
@@ -1354,13 +1354,13 @@ var Colors = [256]*ColorProp{
 		Num:   223,
 		RGBA:  color.RGBA{255, 215, 175, 255},
 		Hex:   "#ffd7af",
-		Names: []string{"css:navajowhite"},
+		Names: []string{"css:navajowhite", "light apricot"},
 	},
 	&ColorProp{
 		Num:   224,
 		RGBA:  color.RGBA{255, 215, 215, 255},
 		Hex:   "#ffd7d7",
-		Names: []string{},
+		Names: []string{"cosmos"},
 	},
 	&ColorProp{
 		Num:   225,
@@ -1390,13 +1390,13 @@ var Colors = [256]*ColorProp{
 		Num:   229,
 		RGBA:  color.RGBA{255, 255, 175, 255},
 		Hex:   "#ffffaf",
-		Names: []string{},
+		Names: []string{"portafino"},
 	},
 	&ColorProp{
 		Num:   230,
 		RGBA:  color.RGBA{255, 255, 215, 255},
 		Hex:   "#ffffd7",
-		Names: []string{"css:cornsilk"},
+		Names: []string{"css:cornsilk", "cumulus"},
 	},
 	&ColorProp{
 		Num:   231,
@@ -1408,7 +1408,7 @@ var Colors = [256]*ColorProp{
 		Num:   232,
 		RGBA:  color.RGBA{8, 8, 8, 255},
 		Hex:   "#080808",
-		Names: []string{"gray 23"},
+		Names: []string{"gray 23", "cod gray"},
 	},
 	&ColorProp{
 		Num:   233,
@@ -1432,7 +1432,7 @@ var Colors = [256]*ColorProp{
 		Num:   236,
 		RGBA:  color.RGBA{48, 48, 48, 255},
 		Hex:   "#303030",
-		Names: []string{"gray 19"},
+		Names: []string{"gray 19", "mine shaft"},
 	},
 	&ColorProp{
 		Num:   237,
@@ -1468,7 +1468,7 @@ var Colors = [256]*ColorProp{
 		Num:   242,
 		RGBA:  color.RGBA{108, 108, 108, 255},
 		Hex:   "#6c6c6c",
-		Names: []string{"gray 13", "css:dimgray"},
+		Names: []string{"gray 13", "css:dimgray", "dove gray"},
 	},
 	&ColorProp{
 		Num:   243,
@@ -1534,18 +1534,18 @@ var Colors = [256]*ColorProp{
 		Num:   253,
 		RGBA:  color.RGBA{218, 218, 218, 255},
 		Hex:   "#dadada",
-		Names: []string{"gray 2", "css:gainsboro"},
+		Names: []string{"gray 2", "css:gainsboro", "alto"},
 	},
 	&ColorProp{
 		Num:   254,
 		RGBA:  color.RGBA{228, 228, 228, 255},
 		Hex:   "#e4e4e4",
-		Names: []string{"gray 1"},
+		Names: []string{"gray 1", "mercury"},
 	},
 	&ColorProp{
 		Num:   255,
 		RGBA:  color.RGBA{238, 238, 238, 255},
 		Hex:   "#eeeeee",
-		Names: []string{"gray 0"},
+		Names: []string{"gray 0", "gallery"},
 	},
 }
