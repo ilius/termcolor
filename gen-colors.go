@@ -37,7 +37,7 @@ var Colors = [256]*ColorProp{
 			file,
 			"\t&ColorProp{\n"+
 				"\t\tNum: %d,\n"+
-				"\t\tRGBA: color.RGBA{0x%02x, 0x%02x, 0x%02x, 0xff},\n"+
+				"\t\tRGBA: color.RGBA{%d, %d, %d, 255},\n"+
 				"\t\tHex: %#v,\n"+
 				"\t\tNames: %#v,\n"+
 				"\t},\n",
