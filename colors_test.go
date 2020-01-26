@@ -61,8 +61,8 @@ func TestColors(t *testing.T) {
 	for num, hex := range testColors {
 		hex = "#" + hex
 		actual := Colors[num]
-		if actual.HTML != hex {
-			t.Errorf("Num=%d, expected %#v, got %#v", num, hex, actual.HTML)
+		if actual.Hex != hex {
+			t.Errorf("Num=%d, expected %#v, got %#v", num, hex, actual.Hex)
 		}
 	}
 }

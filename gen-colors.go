@@ -24,7 +24,7 @@ import (
 type ColorProp struct {
 	RGBA color.RGBA
 	Num uint8
-	HTML string
+	Hex string
 	Names []string
 }
 
@@ -38,7 +38,7 @@ var Colors = [256]*ColorProp{
 			"\t&ColorProp{\n"+
 				"\t\tNum: %d,\n"+
 				"\t\tRGBA: color.RGBA{0x%02x, 0x%02x, 0x%02x, 0xff},\n"+
-				"\t\tHTML: %#v,\n"+
+				"\t\tHex: %#v,\n"+
 				"\t\tNames: %#v,\n"+
 				"\t},\n",
 			num,
