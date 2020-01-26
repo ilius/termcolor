@@ -1,8 +1,9 @@
 package termcolor
 
 import (
-	"github.com/ilius/is"
 	"testing"
+
+	"github.com/ilius/is"
 )
 
 var testColors = map[int]string{
