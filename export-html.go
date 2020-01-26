@@ -19,8 +19,11 @@ func main() {
 
 	// tableWidth := "%50"
 	tableWidth := "600px"
+	bgColor := "#252525"
+	fgColor := "#ffffff"
 
-	fmt.Fprintf(fp, "<html>\n<head><title>8-bit Colors</title></head>\n<body>\n")
+	fmt.Fprintf(fp, "<html>\n<head><title>8-bit Colors</title></head>\n")
+	fmt.Fprintf(fp, "<body style=\"background-color:%s;color:%s;\">\n", bgColor, fgColor)
 	fmt.Fprintf(fp, "<table width=\"%s\">\n", tableWidth)
 	fmt.Fprintf(fp, "\t<tr>\n\t\t"+strings.Join([]string{
 		`<th width="%%30">Color</th>`,
