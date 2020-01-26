@@ -9,23 +9,25 @@ var values = [6]int{
 	0xff, // prev + 40
 }
 
+// these colors are compatible with Xfce terminal and LXDE terminal
+// but Gnome terminal shows brighter colors that are commented
 var first16Colors = map[int][3]int{
-	0:  {0, 0, 0},       // #000000
-	1:  {204, 0, 0},     // #cc0000
-	2:  {78, 154, 6},    // #4e9a06
-	3:  {196, 160, 0},   // #c4a000
-	4:  {52, 101, 164},  // #3465a4
-	5:  {117, 80, 123},  // #75507b
-	6:  {6, 152, 154},   // #06989a
-	7:  {211, 215, 207}, // #d3d7cf
-	8:  {85, 87, 83},    // #555753
-	9:  {239, 41, 41},   // #ef2929
-	10: {138, 226, 52},  // #8ae234
-	11: {252, 233, 79},  // #fce94f
-	12: {114, 159, 207}, // #729fcf
-	13: {173, 127, 168}, // #ad7fa8
-	14: {52, 226, 226},  // #34e2e2
-	15: {238, 238, 236}, // #eeeeec
+	0:  {0, 0, 0},       // 000000, gnome:2e3436
+	1:  {170, 0, 0},     // aa0000, gnome:cc0000
+	2:  {0, 170, 0},     // 00aa00, gnome:4e9a06
+	3:  {170, 85, 0},    // aa5500, gnome:c4a000
+	4:  {0, 0, 170},     // 0000aa, gnome:3465a4
+	5:  {170, 0, 170},   // aa00aa, gnome:75507b
+	6:  {0, 170, 170},   // 00aaaa, gnome:06989a
+	7:  {185, 185, 185}, // b9b9b9, gnome:d3d7cf
+	8:  {85, 85, 85},    // 555555, gnome:555753
+	9:  {255, 85, 85},   // ff5555, gnome:ef2929
+	10: {85, 255, 85},   // 55ff55, gnome:8ae234
+	11: {255, 255, 85},  // ffff55, gnome:fce94f
+	12: {85, 85, 255},   // 5555ff, gnome:729fcf
+	13: {255, 85, 255},  // ff55ff, gnome:ad7fa8
+	14: {85, 255, 255},  // 55ffff, gnome:34e2e2
+	15: {255, 255, 255}, // ffffff, gnome:eeeeec
 }
 
 func NumberToRGB(n int) (int, int, int) {
