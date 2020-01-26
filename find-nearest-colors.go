@@ -63,16 +63,21 @@ func main() {
 		sort.Slice(items, func(i int, j int) bool {
 			return items[i].Distance < items[j].Distance
 		})
-		if items[0].Distance == 0.0 {
-			items = items[:1]
-		} else {
-			items = items[:3]
+		if items[0].Distance >= 30 {
+			continue
 		}
+		end := 1
+		for ;end<4; end++ {
+			if items[end].Distance > 0 {
+				break
+			}
+		}
+		items = items[:end]
 		strItems := make([]string, len(items))
 		for i, item := range items {
 			strItems[i] = item.String()
 		}
-		data[fmt.Sprintf("%.3d", c.Num)] = strItems
+		data[fmt.Sprintf("dist=%04.1f - num=%d - %s", items[0].Distance, c.Num, c.Hex)] = strItems
 	}
 	jsonBytes, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
