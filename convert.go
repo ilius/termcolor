@@ -30,7 +30,7 @@ var first16Colors = map[int][3]int{
 	15: {255, 255, 255}, // ffffff, gnome:eeeeec
 }
 
-func NumberToRGB(n int) (int, int, int) {
+func CodeToRGB(n int) (int, int, int) {
 	if n < 16 {
 		c := first16Colors[n]
 		return c[0], c[1], c[2]

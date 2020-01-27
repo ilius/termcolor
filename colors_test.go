@@ -68,12 +68,12 @@ func TestColors(t *testing.T) {
 	}
 }
 
-func TestNumberToRGB(t *testing.T) {
+func TestCodeToRGB(t *testing.T) {
 	is := is.New(t).Lax()
 	for code, hex := range testColors {
 		is := is.AddMsg("code=%d", code)
 		hex = "#" + hex
-		r, g, b := NumberToRGB(code)
+		r, g, b := CodeToRGB(code)
 		actualHex := RGBToHexColor(r, g, b)
 		if !is.Equal(hex, actualHex) {
 			c, err := ParseHexColor(hex)

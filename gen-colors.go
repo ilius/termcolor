@@ -31,7 +31,7 @@ type ColorProp struct {
 var Colors = [256]*ColorProp{
 `)
 	for code, names := range termcolor.ColorNames {
-		red, green, blue := termcolor.NumberToRGB(code)
+		red, green, blue := termcolor.CodeToRGB(code)
 		htmlColor := termcolor.RGBToHexColor(red, green, blue)
 		fmt.Fprintf(
 			file,
