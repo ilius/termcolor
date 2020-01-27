@@ -1,6 +1,6 @@
 package termcolor
 
-var values = [6]int{
+var values = [6]uint8{
 	0x00,
 	0x5f, // prev + 95
 	0x87, // prev + 40
@@ -11,7 +11,7 @@ var values = [6]int{
 
 // these colors are compatible with Xfce terminal and LXDE terminal
 // but Gnome terminal shows brighter colors that are commented
-var first16Colors = map[int][3]int{
+var first16Colors = map[uint8][3]uint8{
 	0:  {0, 0, 0},       // 000000, gnome:2e3436
 	1:  {170, 0, 0},     // aa0000, gnome:cc0000
 	2:  {0, 170, 0},     // 00aa00, gnome:4e9a06
@@ -30,7 +30,7 @@ var first16Colors = map[int][3]int{
 	15: {255, 255, 255}, // ffffff, gnome:eeeeec
 }
 
-func CodeToRGB(n int) (int, int, int) {
+func CodeToRGB(n uint8) (uint8, uint8, uint8) {
 	if n < 16 {
 		c := first16Colors[n]
 		return c[0], c[1], c[2]

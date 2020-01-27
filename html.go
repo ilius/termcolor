@@ -8,7 +8,7 @@ import (
 
 var errInvalidFormat = errors.New("invalid format")
 
-func RGBToHexColor(r int, g int, b int) string {
+func RGBToHexColor(r uint8, g uint8, b uint8) string {
 	return fmt.Sprintf("#%.2x%.2x%.2x", r, g, b)
 }
 
