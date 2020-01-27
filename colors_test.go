@@ -59,21 +59,21 @@ var testColors = map[int]string{
 }
 
 func TestColors(t *testing.T) {
-	for num, hex := range testColors {
+	for code, hex := range testColors {
 		hex = "#" + hex
-		actual := Colors[num]
+		actual := Colors[code]
 		if actual.Hex != hex {
-			t.Errorf("Num=%d, expected %#v, got %#v", num, hex, actual.Hex)
+			t.Errorf("code=%d, expected %#v, got %#v", code, hex, actual.Hex)
 		}
 	}
 }
 
 func TestNumberToRGB(t *testing.T) {
 	is := is.New(t).Lax()
-	for num, hex := range testColors {
-		is := is.AddMsg("num=%d", num)
+	for code, hex := range testColors {
+		is := is.AddMsg("code=%d", code)
 		hex = "#" + hex
-		r, g, b := NumberToRGB(num)
+		r, g, b := NumberToRGB(code)
 		actualHex := RGBToHexColor(r, g, b)
 		if !is.Equal(hex, actualHex) {
 			c, err := ParseHexColor(hex)

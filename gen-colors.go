@@ -23,25 +23,25 @@ import (
 
 type ColorProp struct {
 	RGBA color.RGBA
-	Num uint8
+	Code uint8
 	Hex string
 	Names []string
 }
 
 var Colors = [256]*ColorProp{
 `)
-	for num, names := range termcolor.ColorNames {
-		red, green, blue := termcolor.NumberToRGB(num)
+	for code, names := range termcolor.ColorNames {
+		red, green, blue := termcolor.NumberToRGB(code)
 		htmlColor := termcolor.RGBToHexColor(red, green, blue)
 		fmt.Fprintf(
 			file,
 			"\t&ColorProp{\n"+
-				"\t\tNum: %d,\n"+
+				"\t\tCode: %d,\n"+
 				"\t\tRGBA: color.RGBA{%d, %d, %d, 255},\n"+
 				"\t\tHex: %#v,\n"+
 				"\t\tNames: %#v,\n"+
 				"\t},\n",
-			num,
+			code,
 			red, green, blue,
 			htmlColor,
 			names,

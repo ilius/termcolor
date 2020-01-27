@@ -32,14 +32,14 @@ func main() {
 		`<th width="%%30">HTML</th>`,
 	}, "\n\t\t"), codeColWidth)
 
-	for num, c := range termcolor.Colors {
-		if num != int(c.Num) {
-			panic("bad number")
+	for code, c := range termcolor.Colors {
+		if code != int(c.Code) {
+			panic("bad color code")
 		}
 		fmt.Fprintf(fp, "\t<tr>\n")
-		fmt.Fprintf(fp, "\t\t"+`<td width="%%30" style="background-color:%s">&nbsp;</th>`, c.HTML)
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%d</th>`, codeColWidth, num)
-		fmt.Fprintf(fp, "\t\t"+`<td width="%%30">%s</th>`, c.HTML)
+		fmt.Fprintf(fp, "\t\t"+`<td width="%%30" style="background-color:%s">&nbsp;</th>`, c.Hex)
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%d</th>`, codeColWidth, code)
+		fmt.Fprintf(fp, "\t\t"+`<td width="%%30">%s</th>`, c.Hex)
 	}
 
 	fmt.Fprintf(fp, "\n</table>\n</body>\n</html>")

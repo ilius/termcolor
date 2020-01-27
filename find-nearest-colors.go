@@ -13,7 +13,7 @@ import (
 	. "github.com/ilius/termcolor"
 )
 
-var skipColorNumbers = map[uint8]uint8{
+var skipColorCodes = map[uint8]uint8{
 	246: 1, // 'mountain mist' (#959396) is close but not gray
 	247: 1, // 'star dust' (#9f9f9c) is close but not gray
 	241: 1, // 'storm dust' (#646463') is close but not gray
@@ -99,7 +99,7 @@ func main() {
 	cssColors := parseCssColorNamesFile(inputFileName)
 	data := map[string][]string{}
 	for _, c := range Colors {
-		if skipColorNumbers[c.Num] > 0 {
+		if skipColorCodes[c.Code] > 0 {
 			continue
 		}
 		items := []*DistItem{}
@@ -129,7 +129,7 @@ func main() {
 		for i, item := range items {
 			strItems[i] = item.String()
 		}
-		data[fmt.Sprintf("dist=%04.1f - num=%d - %s", minDistance, c.Num, c.Hex)] = strItems
+		data[fmt.Sprintf("dist=%04.1f - code=%d - %s", minDistance, c.Code, c.Hex)] = strItems
 	}
 	jsonBytes, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
