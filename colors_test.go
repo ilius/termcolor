@@ -73,7 +73,7 @@ func TestCodeToRGB(t *testing.T) {
 	for code, hex := range testColors {
 		is := is.AddMsg("code=%d", code)
 		hex = "#" + hex
-		r, g, b := CodeToRGB(code)
+		r, g, b := CodeToRGB(uint8(code))
 		actualHex := RGBToHexColor(r, g, b)
 		if !is.Equal(hex, actualHex) {
 			c, err := ParseHexColor(hex)
