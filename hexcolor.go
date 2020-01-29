@@ -6,7 +6,7 @@ import (
 	"image/color"
 )
 
-var errInvalidHexColor = errors.New("invalid format")
+var errInvalidHexColor = errors.New("invalid hex color")
 
 func RGBToHexColor(r uint8, g uint8, b uint8) string {
 	return fmt.Sprintf("#%.2x%.2x%.2x", r, g, b)

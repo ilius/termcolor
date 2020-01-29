@@ -32,22 +32,22 @@ func TestParseHexColor(t *testing.T) {
 	}
 	{
 		c, err := ParseHexColor("#00g")
-		is.ErrMsg(err, "invalid format")
+		is.ErrMsg(err, "invalid hex color")
 		is.Nil(c)
 	}
 	{
 		c, err := ParseHexColor("#00000g")
-		is.ErrMsg(err, "invalid format")
+		is.ErrMsg(err, "invalid hex color")
 		is.Nil(c)
 	}
 	{
 		c, err := ParseHexColor("0f0")
-		is.ErrMsg(err, "invalid format")
+		is.ErrMsg(err, "invalid hex color")
 		is.Nil(c)
 	}
 	{
 		c, err := ParseHexColor("#0f00")
-		is.ErrMsg(err, "invalid format")
+		is.ErrMsg(err, "invalid hex color")
 		is.Nil(c)
 	}
 }
