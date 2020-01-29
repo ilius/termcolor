@@ -17,11 +17,11 @@ func RGBAToHexColor(c color.RGBA) string {
 }
 
 func ParseHexColor(s string) (c *color.RGBA, err error) {
+	if s[0] != '#' {
+		return nil, errInvalidFormat
+	}
 	c = &color.RGBA{}
 	c.A = 0xff
-	if s[0] != '#' {
-		return c, errInvalidFormat
-	}
 	hexToByte := func(b byte) byte {
 		switch {
 		case b >= '0' && b <= '9':
