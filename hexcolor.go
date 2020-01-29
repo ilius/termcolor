@@ -6,7 +6,7 @@ import (
 	"image/color"
 )
 
-var errInvalidFormat = errors.New("invalid format")
+var errInvalidHexColor = errors.New("invalid format")
 
 func RGBToHexColor(r uint8, g uint8, b uint8) string {
 	return fmt.Sprintf("#%.2x%.2x%.2x", r, g, b)
@@ -18,7 +18,7 @@ func RGBAToHexColor(c color.RGBA) string {
 
 func ParseHexColor(s string) (c *color.RGBA, err error) {
 	if s[0] != '#' {
-		return nil, errInvalidFormat
+		return nil, errInvalidHexColor
 	}
 	c = &color.RGBA{}
 	c.A = 0xff
@@ -31,7 +31,7 @@ func ParseHexColor(s string) (c *color.RGBA, err error) {
 		case b >= 'A' && b <= 'F':
 			return b - 'A' + 10
 		}
-		err = errInvalidFormat
+		err = errInvalidHexColor
 		return 0
 	}
 	switch len(s) {
@@ -44,7 +44,7 @@ func ParseHexColor(s string) (c *color.RGBA, err error) {
 		c.G = hexToByte(s[2]) * 17
 		c.B = hexToByte(s[3]) * 17
 	default:
-		err = errInvalidFormat
+		err = errInvalidHexColor
 	}
 	if err != nil {
 		return nil, err
