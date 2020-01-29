@@ -20,7 +20,7 @@ func main() {
 	
 package termcolor
 
-var ColorCodeByName = map[string]uint8{
+var ColorLookup = map[string]uint8{
 `
 	for code, c := range termcolor.Colors {
 		if ignoreColors[code] {
@@ -29,13 +29,14 @@ var ColorCodeByName = map[string]uint8{
 		for _, name := range c.Names {
 			goCode += fmt.Sprintf("\t%#v: %d,\n", name, code)
 		}
+		goCode += fmt.Sprintf("\t%#v: %d,\n", c.Hex, code)
 	}
 	goCode += "}"
 	goCodeNew, err := format.Source([]byte(goCode))
 	if err != nil {
 		panic(err)
 	}
-	err = ioutil.WriteFile("byname.go", goCodeNew, 0644)
+	err = ioutil.WriteFile("lookup.go", goCodeNew, 0644)
 	if err != nil {
 		panic(err)
 	}
