@@ -14,7 +14,8 @@ func TestRoundValue(t *testing.T) {
 	}
 	test := func(tc Case) {
 		is := is.New(t).AddMsg("value=%v, mode=%v", tc.value, tc.mode)
-		actual, err := roundValue(tc.value, tc.mode)
+		actualIndex, err := roundValue(tc.value, tc.mode)
+		actual := values[actualIndex]
 		is.Equal(actual, tc.expected)
 		if tc.expectErr != "" {
 			is.ErrMsg(err, tc.expectErr)

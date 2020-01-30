@@ -61,7 +61,7 @@ func CodeToRGB(n uint8) (uint8, uint8, uint8) {
 	return red, green, blue
 }
 
-func roundValue(v uint8, mode RoundMode) (uint8, error) {
+func roundValue(v uint8, mode RoundMode) (int, error) {
 	switch mode {
 	case RoundCloser:
 		return roundValueCloser(v), nil
@@ -73,30 +73,30 @@ func roundValue(v uint8, mode RoundMode) (uint8, error) {
 	return 0, fmt.Errorf("roundValue: invalid mode")
 }
 
-func roundValueCloser(v uint8) uint8 {
+func roundValueCloser(v uint8) int {
 	switch {
 	case v <= 47:
 		return 0
 	case v <= 115:
-		return 95
+		return 1
 	case v <= 155:
-		return 135
+		return 2
 	case v <= 195:
-		return 175
+		return 3
 	case v <= 235:
-		return 215
+		return 4
 	}
-	return 255
+	return 5
 }
 
-func roundValueDown(v uint8) uint8 {
-	return values[5-sort.Search(6, func(i int) bool {
+func roundValueDown(v uint8) int {
+	return 5 - sort.Search(6, func(i int) bool {
 		return values[5-i] <= v
-	})]
+	})
 }
 
-func roundValueUp(v uint8) uint8 {
-	return values[sort.Search(6, func(i int) bool {
+func roundValueUp(v uint8) int {
+	return sort.Search(6, func(i int) bool {
 		return values[i] >= v
-	})]
+	})
 }
