@@ -2,6 +2,7 @@ package termcolor
 
 import (
 	"fmt"
+	"image/color"
 	"sort"
 )
 
@@ -99,4 +100,30 @@ func roundValueUp(v uint8) int {
 	return sort.Search(6, func(i int) bool {
 		return values[i] >= v
 	})
+}
+
+func ClosestToRGB(c color.RGBA, mode RoundMode) (*ColorProp, error) {
+	ri, err := roundValue(c.R, mode)
+	if err != nil {
+		return nil, err
+	}
+	gi, err := roundValue(c.G, mode)
+	if err != nil {
+		return nil, err
+	}
+	bi, err := roundValue(c.B, mode)
+	if err != nil {
+		return nil, err
+	}
+	code := ri*36 + gi*6 + bi + 16
+	return Colors[code], nil
+	/*
+		m := n - 16
+		ri = int(m/36)
+		gi = int((m%36)/6)
+		bi = m%6
+		red := values[ri]
+		green := values[gi]
+		blue := values[bi]
+	*/
 }
