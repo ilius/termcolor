@@ -1,12 +1,25 @@
 package termcolor
 
+import (
+	"fmt"
+	"sort"
+)
+
+type RoundMode uint8
+
+const (
+	RoundCloser RoundMode = iota
+	RoundDown
+	RoundUp
+)
+
 var values = [6]uint8{
-	0x00,
-	0x5f, // prev + 95
-	0x87, // prev + 40
-	0xaf, // prev + 40
-	0xd7, // prev + 40
-	0xff, // prev + 40
+	0,
+	95,  // prev + 95
+	135, // prev + 40
+	175, // prev + 40
+	215, // prev + 40
+	255, // prev + 40
 }
 
 // these colors are compatible with Xfce terminal and LXDE terminal
@@ -46,4 +59,44 @@ func CodeToRGB(n uint8) (uint8, uint8, uint8) {
 	blue := values[m%6]
 
 	return red, green, blue
+}
+
+func roundValue(v uint8, mode RoundMode) (uint8, error) {
+	switch mode {
+	case RoundCloser:
+		return roundValueCloser(v), nil
+	case RoundDown:
+		return roundValueDown(v), nil
+	case RoundUp:
+		return roundValueUp(v), nil
+	}
+	return 0, fmt.Errorf("roundValue: invalid mode")
+}
+
+func roundValueCloser(v uint8) uint8 {
+	switch {
+	case v <= 47:
+		return 0
+	case v <= 115:
+		return 95
+	case v <= 155:
+		return 135
+	case v <= 195:
+		return 175
+	case v <= 235:
+		return 215
+	}
+	return 255
+}
+
+func roundValueDown(v uint8) uint8 {
+	return values[5-sort.Search(6, func(i int) bool {
+		return values[5-i] <= v
+	})]
+}
+
+func roundValueUp(v uint8) uint8 {
+	return values[sort.Search(6, func(i int) bool {
+		return values[i] >= v
+	})]
 }
