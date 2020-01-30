@@ -1,4 +1,4 @@
-//go:generate go run gen-byname.go
+//go:generate go run gen-lookup.go
 
 package termcolor
 

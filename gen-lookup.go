@@ -16,7 +16,7 @@ var ignoreColors = map[int]bool{
 }
 
 func main() {
-	goCode := `//go:generate go run gen-byname.go
+	goCode := `//go:generate go run gen-lookup.go
 	
 package termcolor
 
