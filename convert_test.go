@@ -1,9 +1,208 @@
 package termcolor
 
 import (
-	"github.com/ilius/is"
+	"image/color"
 	"testing"
+
+	"github.com/ilius/is"
 )
+
+func uint8Ptr(x uint8) *uint8 {
+	x2 := x
+	return &x2
+}
+
+func TestClosestToRGB(t *testing.T) {
+	type Case struct {
+		input        color.RGBA
+		mode         RoundMode
+		grayMaxDelta *uint8
+		expectedErr  string
+		expectedCode uint8
+	}
+	test := func(tc Case) {
+		is := is.New(t).AddMsg("input=%v, mode=%v", tc.input, tc.mode)
+		actual, err := ClosestToRGB(&ClosestToRGBInput{
+			Target:       tc.input,
+			RoundMode:    tc.mode,
+			GrayMaxDelta: tc.grayMaxDelta,
+		})
+		if tc.expectedErr != "" {
+			is.ErrMsg(err, tc.expectedErr)
+			is.Nil(actual)
+			return
+		}
+		expectedCode := tc.expectedCode
+		expectedRGBA := Colors[expectedCode].RGBA
+		is.Equal(actual.Code, expectedCode)
+		is.Equal(actual.RGBA, expectedRGBA)
+	}
+	test(Case{
+		input:        color.RGBA{95, 175, 95, 255},
+		mode:         RoundCloser,
+		expectedCode: 71,
+	})
+	test(Case{
+		input:        color.RGBA{93, 177, 97, 255},
+		mode:         RoundCloser,
+		expectedCode: 71,
+	})
+	test(Case{
+		input:        color.RGBA{93, 177, 97, 255},
+		mode:         RoundDown,
+		expectedCode: 35, // {0, 175, 95, 255}
+	})
+	test(Case{
+		input:        color.RGBA{93, 177, 97, 255},
+		mode:         RoundUp,
+		expectedCode: 78, // {95, 215, 135, 255}
+	})
+	test(Case{
+		input:        color.RGBA{8, 8, 8, 255},
+		mode:         RoundCloser,
+		expectedCode: 232, // {8, 8, 8, 255}
+	})
+	test(Case{
+		input:        color.RGBA{9, 9, 9, 255},
+		mode:         RoundCloser,
+		expectedCode: 232, // {8, 8, 8, 255}
+	})
+	test(Case{
+		input:        color.RGBA{10, 10, 10, 255},
+		mode:         RoundCloser,
+		expectedCode: 232, // {8, 8, 8, 255}
+	})
+	test(Case{
+		input:        color.RGBA{8, 9, 8, 255},
+		mode:         RoundCloser,
+		expectedCode: 232, // {8, 8, 8, 255}
+	})
+	test(Case{
+		input:        color.RGBA{8, 8, 10, 255},
+		mode:         RoundCloser,
+		expectedCode: 232, // {8, 8, 8, 255}
+	})
+	test(Case{
+		input:        color.RGBA{6, 8, 6, 255},
+		mode:         RoundCloser,
+		expectedCode: 232, // {8, 8, 8, 255}
+	})
+	test(Case{
+		input:        color.RGBA{7, 6, 8, 255},
+		mode:         RoundCloser,
+		expectedCode: 232, // {8, 8, 8, 255}
+	})
+	test(Case{
+		input:        color.RGBA{6, 8, 6, 255},
+		mode:         RoundCloser,
+		grayMaxDelta: uint8Ptr(2),
+		expectedCode: 232, // {8, 8, 8, 255}
+	})
+	test(Case{
+		input:        color.RGBA{6, 8, 6, 255},
+		mode:         RoundCloser,
+		grayMaxDelta: uint8Ptr(1),
+		expectedCode: 0, // {0, 0, 0, 255}
+	})
+}
+
+func TestDivideRound(t *testing.T) {
+	type Case struct {
+		a        uint8
+		b        uint8
+		mode     RoundMode
+		expected uint8
+	}
+	test := func(tc Case) {
+		is := is.New(t).AddMsg("a=%v, b=%v, mode=%v", tc.a, tc.b, tc.mode)
+		actual := divideRound(tc.a, tc.b, tc.mode)
+		is.Equal(actual, tc.expected)
+	}
+	test(Case{
+		a:        0,
+		b:        10,
+		mode:     RoundDown,
+		expected: 0,
+	})
+	test(Case{
+		a:        0,
+		b:        10,
+		mode:     RoundUp,
+		expected: 0,
+	})
+	test(Case{
+		a:        30,
+		b:        10,
+		mode:     RoundDown,
+		expected: 3,
+	})
+	test(Case{
+		a:        30,
+		b:        10,
+		mode:     RoundUp,
+		expected: 3,
+	})
+	test(Case{
+		a:        31,
+		b:        10,
+		mode:     RoundDown,
+		expected: 3,
+	})
+	test(Case{
+		a:        31,
+		b:        10,
+		mode:     RoundUp,
+		expected: 4,
+	})
+	test(Case{
+		a:        31,
+		b:        10,
+		mode:     RoundCloser,
+		expected: 3,
+	})
+	test(Case{
+		a:        39,
+		b:        10,
+		mode:     RoundDown,
+		expected: 3,
+	})
+	test(Case{
+		a:        39,
+		b:        10,
+		mode:     RoundUp,
+		expected: 4,
+	})
+	test(Case{
+		a:        39,
+		b:        10,
+		mode:     RoundCloser,
+		expected: 4,
+	})
+	test(Case{
+		a:        38,
+		b:        10,
+		mode:     RoundCloser,
+		expected: 4,
+	})
+	test(Case{
+		a:        37,
+		b:        10,
+		mode:     RoundCloser,
+		expected: 4,
+	})
+	test(Case{
+		a:        36,
+		b:        10,
+		mode:     RoundCloser,
+		expected: 4,
+	})
+	test(Case{
+		a:        35,
+		b:        10,
+		mode:     RoundCloser,
+		expected: 3,
+	})
+}
 
 func TestRoundValue(t *testing.T) {
 	type Case struct {

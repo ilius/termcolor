@@ -14,6 +14,9 @@ const (
 	RoundUp
 )
 
+// DefaultGrayMaxDelta is default value for GrayMaxDelta as option for ClosestToRGB func
+var DefaultGrayMaxDelta uint8 = 20
+
 var values = [6]uint8{
 	0,
 	95,  // prev + 95
@@ -102,21 +105,105 @@ func roundValueUp(v uint8) int {
 	})
 }
 
-func ClosestToRGB(c color.RGBA, mode RoundMode) (*ColorProp, error) {
-	ri, err := roundValue(c.R, mode)
+func absInt8Diff(a uint8, b uint8) uint8 {
+	d := int16(a) - int16(b)
+	if d < 0 {
+		d = -d
+	}
+	return uint8(d)
+}
+
+func max3uint8(a uint8, b uint8, c uint8) uint8 {
+	if a < b {
+		a = b
+	}
+	// ^ in Python words: a = max(a, b)
+	if a < c {
+		a = c
+	}
+	// ^ in Python words: a = max(a, c)
+	return a
+}
+
+func rgbMaxDelta(c *color.RGBA) uint8 {
+	return max3uint8(
+		absInt8Diff(c.R, c.G),
+		absInt8Diff(c.R, c.B),
+		absInt8Diff(c.G, c.B),
+	)
+}
+
+func rgbAverage(c *color.RGBA) uint8 {
+	return (c.R + c.G + c.B) / 3
+}
+
+// ClosestToRGBInput is input struct for ClosestToRGB
+type ClosestToRGBInput struct {
+	Target       color.RGBA
+	RoundMode    RoundMode // optional, default: RoundCloser
+	GrayMaxDelta *uint8    // optional, default: DefaultGrayMaxDelta
+}
+
+// getGrayMaxDelta returns GrayMaxDelta if non-nil, and default value (DefaultGrayMaxDelta) if nil
+func (in *ClosestToRGBInput) getGrayMaxDelta() uint8 {
+	if in.GrayMaxDelta != nil {
+		return *in.GrayMaxDelta
+	}
+	return DefaultGrayMaxDelta
+}
+
+func (in *ClosestToRGBInput) isCloseToGray() bool {
+	return rgbMaxDelta(&in.Target) <= in.getGrayMaxDelta()
+}
+
+func divideRoundUp(a uint8, b uint8) uint8 {
+	return (a + b - 1) / b
+}
+
+func divideRoundCloser(a uint8, b uint8) uint8 {
+	if a%b > b/2 {
+		return (a + b - 1) / b
+	}
+	return a / b
+}
+
+// returns round(a/b) based on given RoundMode
+func divideRound(a uint8, b uint8, mode RoundMode) uint8 {
+	switch mode {
+	case RoundDown:
+		return a / b
+	case RoundUp:
+		return divideRoundUp(a, b)
+	}
+	return divideRoundCloser(a, b)
+}
+
+func ClosestGrayToRGB(target *color.RGBA, mode RoundMode) *ColorProp {
+	v1 := rgbAverage(target)
+	if v1 <= 8 {
+		return Colors[232]
+	}
+	return Colors[divideRound(v1-8, 10, mode)+232]
+}
+
+// ClosestToRGB finds the closest terminal color to a given full RGB color
+func ClosestToRGB(in *ClosestToRGBInput) (*ColorProp, error) {
+	ri, err := roundValue(in.Target.R, in.RoundMode)
 	if err != nil {
 		return nil, err
 	}
-	gi, err := roundValue(c.G, mode)
+	gi, err := roundValue(in.Target.G, in.RoundMode)
 	if err != nil {
 		return nil, err
 	}
-	bi, err := roundValue(c.B, mode)
+	bi, err := roundValue(in.Target.B, in.RoundMode)
 	if err != nil {
 		return nil, err
 	}
 	code := ri*36 + gi*6 + bi + 16
-	return Colors[code], nil
+	if code == 16 {
+		code = 0
+	}
 	/*
 		m := n - 16
 		ri = int(m/36)
@@ -126,4 +213,15 @@ func ClosestToRGB(c color.RGBA, mode RoundMode) (*ColorProp, error) {
 		green := values[gi]
 		blue := values[bi]
 	*/
+	res := Colors[code]
+	if in.isCloseToGray() {
+		resGray := ClosestGrayToRGB(&in.Target, in.RoundMode)
+		dist := DistanceRGB(res.RGBA, in.Target)
+		distGray := DistanceRGB(resGray.RGBA, in.Target)
+		// fmt.Printf("color=%#v, dist=%.1f, distGray=%.1f\n", in.Target, dist, distGray)
+		if distGray < dist {
+			res = resGray
+		}
+	}
+	return res, nil
 }
