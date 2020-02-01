@@ -219,13 +219,13 @@ func closerToWhite(v uint8, mode RoundMode) bool {
 }
 
 func closestGrayCodeToRGB(vv uint8, mode RoundMode) uint8 {
-	grayPortion := divideRound(vv-8, 10, mode)
+	grayIndex := divideRound(vv-8, 10, mode)
 	closeToValue := func(v1 uint8) bool {
 		return diffWithMode(v1, vv, mode) <
-			diffWithMode(Colors[grayPortion+232].RGBA.R, vv, mode)
+			diffWithMode(Colors[grayIndex+232].RGBA.R, vv, mode)
 	}
 	// fmt.Printf("ClosestGrayToRGB: vv=%v -> code=%v\n", vv, code)
-	switch grayPortion {
+	switch grayIndex {
 	case 7, 8: // {78, 78, 78}, {88, 88, 88}
 		if closeToValue(85) {
 			return 8 // {85, 85, 85}
@@ -242,7 +242,7 @@ func closestGrayCodeToRGB(vv uint8, mode RoundMode) uint8 {
 			return 255 // lighest gray
 		}
 	}
-	return grayPortion + 232
+	return grayIndex + 232
 }
 
 func ClosestGrayToRGB(target *color.RGBA, mode RoundMode) *ColorProp {
