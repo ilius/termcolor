@@ -45,7 +45,7 @@ func (in *ClosestToRGBInput) isCloseToGray() bool {
 	return rgbMaxDelta(&in.Target) <= in.getGrayMaxDelta()
 }
 
-func ClosestGrayToRGB(target *color.RGBA, mode RoundMode) *ColorProp {
+func ClosestToRGBGray(target *color.RGBA, mode RoundMode) *ColorProp {
 	vv := rgbAverage(target)
 	if vv <= 8 {
 		return Colors[232]
@@ -127,7 +127,7 @@ func ClosestToRGB(in *ClosestToRGBInput) (*ColorProp, error) {
 	*/
 	res := Colors[code]
 	if in.isCloseToGray() {
-		resGray := ClosestGrayToRGB(&in.Target, in.RoundMode)
+		resGray := ClosestToRGBGray(&in.Target, in.RoundMode)
 		dist := DistanceRGB(&res.RGBA, &in.Target)
 		distGray := DistanceRGB(&resGray.RGBA, &in.Target)
 		if distGray < dist {
