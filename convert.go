@@ -262,7 +262,7 @@ func ClosestGrayToRGB(target *color.RGBA, mode RoundMode) *ColorProp {
 	return Colors[code]
 }
 
-func closestFromPalette(target *color.RGBA) *ColorProp {
+func ClosestToRGBFromPalette(target *color.RGBA) *ColorProp {
 	const delta = 20
 	around := func(v uint8, t uint8) bool {
 		return absInt8Diff(v, t) <= delta
@@ -338,7 +338,7 @@ func ClosestToRGB(in *ClosestToRGBInput) (*ColorProp, error) {
 			res = resGray
 		}
 	}
-	resPal := closestFromPalette(&in.Target)
+	resPal := ClosestToRGBFromPalette(&in.Target)
 	if resPal != nil {
 		dist := DistanceRGB(&res.RGBA, &in.Target)
 		distPal := DistanceRGB(&resPal.RGBA, &in.Target)
