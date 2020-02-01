@@ -292,14 +292,12 @@ func closestFromPalette(target *color.RGBA) *ColorProp {
 				return Colors[3]
 			}
 		}
-		break
 	case around(x, 85) && around(z, 255):
 		if around(y, 85) {
 			return channelSwitch(z, 9, 10, 12)
 		} else if around(y, 255) {
 			return channelSwitch(x, 14, 13, 11)
 		}
-		break
 	}
 	return nil
 }
