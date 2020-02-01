@@ -12,3 +12,8 @@ func isFloatBetween(is *is.Is, actual float64, min float64, max float64) {
 		max,
 	).True(min <= actual && actual <= max)
 }
+
+func uint8Ptr(x uint8) *uint8 {
+	x2 := x
+	return &x2
+}

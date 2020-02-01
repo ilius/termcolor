@@ -30,21 +30,26 @@ var values = [6]uint8{
 // but Gnome terminal shows brighter colors that are commented
 var first16Colors = map[uint8][3]uint8{
 	0:  {0, 0, 0},       // 000000, gnome:2e3436
-	1:  {170, 0, 0},     // aa0000, gnome:cc0000
-	2:  {0, 170, 0},     // 00aa00, gnome:4e9a06
-	3:  {170, 85, 0},    // aa5500, gnome:c4a000
-	4:  {0, 0, 170},     // 0000aa, gnome:3465a4
-	5:  {170, 0, 170},   // aa00aa, gnome:75507b
-	6:  {0, 170, 170},   // 00aaaa, gnome:06989a
-	7:  {185, 185, 185}, // b9b9b9, gnome:d3d7cf
 	8:  {85, 85, 85},    // 555555, gnome:555753
-	9:  {255, 85, 85},   // ff5555, gnome:ef2929
-	10: {85, 255, 85},   // 55ff55, gnome:8ae234
-	11: {255, 255, 85},  // ffff55, gnome:fce94f
-	12: {85, 85, 255},   // 5555ff, gnome:729fcf
-	13: {255, 85, 255},  // ff55ff, gnome:ad7fa8
-	14: {85, 255, 255},  // 55ffff, gnome:34e2e2
+	7:  {185, 185, 185}, // b9b9b9, gnome:d3d7cf
 	15: {255, 255, 255}, // ffffff, gnome:eeeeec
+
+	1: {170, 0, 0}, // aa0000, gnome:cc0000
+	2: {0, 170, 0}, // 00aa00, gnome:4e9a06
+	4: {0, 0, 170}, // 0000aa, gnome:3465a4
+
+	3: {170, 85, 0}, // aa5500, gnome:c4a000
+
+	5: {170, 0, 170}, // aa00aa, gnome:75507b
+	6: {0, 170, 170}, // 00aaaa, gnome:06989a
+
+	9:  {255, 85, 85}, // ff5555, gnome:ef2929
+	10: {85, 255, 85}, // 55ff55, gnome:8ae234
+	12: {85, 85, 255}, // 5555ff, gnome:729fcf
+
+	11: {255, 255, 85}, // ffff55, gnome:fce94f
+	13: {255, 85, 255}, // ff55ff, gnome:ad7fa8
+	14: {85, 255, 255}, // 55ffff, gnome:34e2e2
 }
 
 func CodeToRGB(n uint8) (uint8, uint8, uint8) {
@@ -125,6 +130,14 @@ func max3uint8(a uint8, b uint8, c uint8) uint8 {
 	return a
 }
 
+func sortedRGB(c *color.RGBA) (uint8, uint8, uint8) {
+	s := []uint8{c.R, c.G, c.B}
+	sort.Slice(s, func(i int, j int) bool {
+		return s[i] < s[j]
+	})
+	return s[0], s[1], s[2]
+}
+
 func rgbMaxDelta(c *color.RGBA) uint8 {
 	return max3uint8(
 		absInt8Diff(c.R, c.G),
@@ -134,7 +147,7 @@ func rgbMaxDelta(c *color.RGBA) uint8 {
 }
 
 func rgbAverage(c *color.RGBA) uint8 {
-	return (c.R + c.G + c.B) / 3
+	return uint8((uint16(c.R) + uint16(c.G) + uint16(c.B)) / 3)
 }
 
 // ClosestToRGBInput is input struct for ClosestToRGB
@@ -178,12 +191,139 @@ func divideRound(a uint8, b uint8, mode RoundMode) uint8 {
 	return divideRoundCloser(a, b)
 }
 
+func diffWithMode(target uint8, source uint8, mode RoundMode) uint8 {
+	switch mode {
+	case RoundUp:
+		if source > target {
+			return 255
+		}
+		return target - source
+	case RoundDown:
+		if source < target {
+			return 255
+		}
+		return source - target
+	}
+	// assume it's RoundCloser
+	return absInt8Diff(target, source)
+}
+
+func closerToWhite(v uint8, mode RoundMode) bool {
+	switch mode {
+	case RoundCloser:
+		return v > 246
+	case RoundUp:
+		return v > 238
+	}
+	return false
+}
+
+func closestGrayCodeToRGB(vv uint8, mode RoundMode) uint8 {
+	grayPortion := divideRound(vv-8, 10, mode)
+	// fmt.Printf("ClosestGrayToRGB: vv=%v -> code=%v\n", vv, code)
+	switch grayPortion {
+	case 7, 8: // {78, 78, 78}, {88, 88, 88}
+		v2 := Colors[grayPortion+232].RGBA.R
+		if diffWithMode(85, vv, mode) < diffWithMode(v2, vv, mode) {
+			return 8 // {85, 85, 85}
+		}
+	case 17, 18: // {178, 178, 178}, {188, 188, 188}
+		v2 := Colors[grayPortion+232].RGBA.R
+		if diffWithMode(185, vv, mode) < diffWithMode(v2, vv, mode) {
+			return 7 // {185, 185, 185}
+		}
+	case 23, 24, 25: // {238, 238, 238}
+		// fmt.Printf("closestGrayCodeToRGB: vv=%v -> closerToWhite=%v\n", vv, closerToWhite(vv, mode))
+		if closerToWhite(vv, mode) {
+			return 15 // white
+		} else {
+			return 255 // lighest gray
+		}
+	}
+	return grayPortion + 232
+}
+
 func ClosestGrayToRGB(target *color.RGBA, mode RoundMode) *ColorProp {
-	v1 := rgbAverage(target)
-	if v1 <= 8 {
+	vv := rgbAverage(target)
+	if vv <= 8 {
 		return Colors[232]
 	}
-	return Colors[divideRound(v1-8, 10, mode)+232]
+	// TODO: better detection of near-black based on mode
+	if vv == 255 {
+		return Colors[15]
+	}
+	code := closestGrayCodeToRGB(vv, mode)
+	return Colors[code]
+}
+
+func closestFromPalette(target *color.RGBA) *ColorProp {
+	const delta = 20
+	around := func(v uint8, t uint8) bool {
+		return absInt8Diff(v, t) <= delta
+	}
+	r, g, b := target.R, target.G, target.B
+	x, y, z := sortedRGB(target)
+	// x <= y <= z   and   set(x, y, z) == set(r, g, b)
+	if x >= 235 { // close to white
+		return Colors[15]
+	}
+	switch {
+	case x <= delta && around(z, 170):
+		// fmt.Println("case 1")
+		if y <= delta {
+			// fmt.Println("case 1.1")
+			switch z {
+			case r: // {170, 0, 0}
+				return Colors[1]
+			case g: // {0, 170, 0}
+				return Colors[2]
+			case b: // {0, 0, 170}
+				return Colors[4]
+			}
+		} else if around(y, 170) {
+			// fmt.Println("case 1.2")
+			switch x {
+			case r: // {0, 170, 170}
+				return Colors[6]
+			case g: // {170, 0, 170}
+				return Colors[5]
+			case b: // {170, 170, 0} does not exist
+				break
+			}
+		} else {
+			// fmt.Printf("case 1.3: r=%v, g=%v, b=%v\n", r, g, b)
+			// {170, 85, 0}
+			if around(r, 170) && around(g, 85) && b <= delta {
+				return Colors[3]
+			}
+		}
+		break
+	case around(x, 85) && around(z, 255):
+		// fmt.Println("case 2")
+		if around(y, 85) {
+			// fmt.Println("case 2.1")
+			switch z {
+			case r: // {255, 85, 85}
+				return Colors[9]
+			case g: // {85, 255, 85}
+				return Colors[10]
+			case b: // {85, 85, 255}
+				return Colors[12]
+			}
+		} else if around(y, 255) {
+			// fmt.Println("case 2.2")
+			switch x {
+			case r: // {85, 255, 255}
+				return Colors[14]
+			case g: // {255, 85, 255}
+				return Colors[13]
+			case b: // {255, 255, 85}
+				return Colors[11]
+			}
+		}
+		break
+	}
+	return nil
 }
 
 // ClosestToRGB finds the closest terminal color to a given full RGB color
@@ -218,9 +358,17 @@ func ClosestToRGB(in *ClosestToRGBInput) (*ColorProp, error) {
 		resGray := ClosestGrayToRGB(&in.Target, in.RoundMode)
 		dist := DistanceRGB(res.RGBA, in.Target)
 		distGray := DistanceRGB(resGray.RGBA, in.Target)
-		// fmt.Printf("color=%#v, dist=%.1f, distGray=%.1f\n", in.Target, dist, distGray)
+		// fmt.Printf("color=%#v, dist=%.1f, distGray=%.1f, gray=%v\n", in.Target, dist, distGray, resGray.RGBA)
 		if distGray < dist {
 			res = resGray
+		}
+	}
+	resPal := closestFromPalette(&in.Target)
+	if resPal != nil {
+		dist := DistanceRGB(res.RGBA, in.Target)
+		distPal := DistanceRGB(resPal.RGBA, in.Target)
+		if distPal <= dist { // pallete is preferred if same distance
+			res = resPal
 		}
 	}
 	return res, nil
