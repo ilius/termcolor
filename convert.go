@@ -27,29 +27,24 @@ var values = [6]uint8{
 }
 
 // these colors are compatible with Xfce terminal and LXDE terminal
-// but Gnome terminal shows brighter colors that are commented
+// but Tango palette (in Gnome Terminal) has brighter colors
 var first16Colors = map[uint8][3]uint8{
-	0:  {0, 0, 0},       // 000000, gnome:2e3436
-	8:  {85, 85, 85},    // 555555, gnome:555753
-	7:  {185, 185, 185}, // b9b9b9, gnome:d3d7cf
-	15: {255, 255, 255}, // ffffff, gnome:eeeeec
-
-	1: {170, 0, 0}, // aa0000, gnome:cc0000
-	2: {0, 170, 0}, // 00aa00, gnome:4e9a06
-	4: {0, 0, 170}, // 0000aa, gnome:3465a4
-
-	3: {170, 85, 0}, // aa5500, gnome:c4a000
-
-	5: {170, 0, 170}, // aa00aa, gnome:75507b
-	6: {0, 170, 170}, // 00aaaa, gnome:06989a
-
-	9:  {255, 85, 85}, // ff5555, gnome:ef2929
-	10: {85, 255, 85}, // 55ff55, gnome:8ae234
-	12: {85, 85, 255}, // 5555ff, gnome:729fcf
-
-	11: {255, 255, 85}, // ffff55, gnome:fce94f
-	13: {255, 85, 255}, // ff55ff, gnome:ad7fa8
-	14: {85, 255, 255}, // 55ffff, gnome:34e2e2
+	0:  {0, 0, 0},       // 000000, tango:2e3436, group 1
+	8:  {85, 85, 85},    // 555555, tango:555753, group 1
+	7:  {185, 185, 185}, // b9b9b9, tango:d3d7cf, group 1
+	15: {255, 255, 255}, // ffffff, tango:eeeeec, group 1
+	1:  {170, 0, 0},     // aa0000, tango:cc0000, group 2
+	2:  {0, 170, 0},     // 00aa00, tango:4e9a06, group 2
+	4:  {0, 0, 170},     // 0000aa, tango:3465a4, group 2
+	3:  {170, 85, 0},    // aa5500, tango:c4a000, group 3
+	5:  {170, 0, 170},   // aa00aa, tango:75507b, group 4
+	6:  {0, 170, 170},   // 00aaaa, tango:06989a, group 4
+	9:  {255, 85, 85},   // ff5555, tango:ef2929, group 5
+	10: {85, 255, 85},   // 55ff55, tango:8ae234, group 5
+	12: {85, 85, 255},   // 5555ff, tango:729fcf, group 5
+	11: {255, 255, 85},  // ffff55, tango:fce94f, group 6
+	13: {255, 85, 255},  // ff55ff, tango:ad7fa8, group 6
+	14: {85, 255, 255},  // 55ffff, tango:34e2e2, group 6
 }
 
 func CodeToRGB(n uint8) (uint8, uint8, uint8) {
