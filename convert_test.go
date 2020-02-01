@@ -202,6 +202,17 @@ func TestClosestToRGB(t *testing.T) {
 		expectedCode: 8, // 85, 85, 85
 	})
 	test(Case{
+		input:        color.RGBA{87, 87, 87, 255},
+		mode:         RoundUp,
+		expectedCode: 240, // 88, 88, 88
+	})
+	test(Case{
+		input:        color.RGBA{179, 179, 179, 255},
+		mode:         RoundDown,
+		expectedCode: 249, // 178, 178, 178
+	})
+
+	test(Case{
 		input:        color.RGBA{255, 85, 85, 255},
 		mode:         RoundCloser,
 		expectedCode: 9, // 255, 85, 85
