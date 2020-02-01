@@ -10,7 +10,7 @@ import (
 func TestDistanceRGB(t *testing.T) {
 	test := func(c1 color.RGBA, c2 color.RGBA, dist float64) {
 		is := is.New(t).AddMsg("c1=%v, c2=%v", c1, c2)
-		actual := DistanceRGB(c1, c2)
+		actual := DistanceRGB(&c1, &c2)
 		isFloatBetween(is, actual, dist, dist+0.1)
 	}
 	test(

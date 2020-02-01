@@ -332,16 +332,16 @@ func ClosestToRGB(in *ClosestToRGBInput) (*ColorProp, error) {
 	res := Colors[code]
 	if in.isCloseToGray() {
 		resGray := ClosestGrayToRGB(&in.Target, in.RoundMode)
-		dist := DistanceRGB(res.RGBA, in.Target)
-		distGray := DistanceRGB(resGray.RGBA, in.Target)
+		dist := DistanceRGB(&res.RGBA, &in.Target)
+		distGray := DistanceRGB(&resGray.RGBA, &in.Target)
 		if distGray < dist {
 			res = resGray
 		}
 	}
 	resPal := closestFromPalette(&in.Target)
 	if resPal != nil {
-		dist := DistanceRGB(res.RGBA, in.Target)
-		distPal := DistanceRGB(resPal.RGBA, in.Target)
+		dist := DistanceRGB(&res.RGBA, &in.Target)
+		distPal := DistanceRGB(&resPal.RGBA, &in.Target)
 		if distPal <= dist { // pallete is preferred if same distance
 			res = resPal
 		}
