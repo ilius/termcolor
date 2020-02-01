@@ -267,26 +267,25 @@ func closestFromPalette(target *color.RGBA) *ColorProp {
 	if x >= 235 { // close to white
 		return Colors[15]
 	}
+
+	channelSwitch := func(u uint8, ri uint8, gi uint8, bi uint8) *ColorProp {
+		switch u {
+		case r:
+			return Colors[ri]
+		case g:
+			return Colors[gi]
+		case b:
+			return Colors[bi]
+		}
+		return nil
+	}
+
 	switch {
 	case x <= delta && around(z, 170):
 		if y <= delta {
-			switch z {
-			case r: // {170, 0, 0}
-				return Colors[1]
-			case g: // {0, 170, 0}
-				return Colors[2]
-			case b: // {0, 0, 170}
-				return Colors[4]
-			}
+			return channelSwitch(z, 1, 2, 4)
 		} else if around(y, 170) {
-			switch x {
-			case r: // {0, 170, 170}
-				return Colors[6]
-			case g: // {170, 0, 170}
-				return Colors[5]
-			case b: // {170, 170, 0} does not exist
-				break
-			}
+			return channelSwitch(x, 6, 5, 142)
 		} else {
 			// {170, 85, 0}
 			if around(r, 170) && around(g, 85) && b <= delta {
@@ -296,23 +295,9 @@ func closestFromPalette(target *color.RGBA) *ColorProp {
 		break
 	case around(x, 85) && around(z, 255):
 		if around(y, 85) {
-			switch z {
-			case r: // {255, 85, 85}
-				return Colors[9]
-			case g: // {85, 255, 85}
-				return Colors[10]
-			case b: // {85, 85, 255}
-				return Colors[12]
-			}
+			return channelSwitch(z, 9, 10, 12)
 		} else if around(y, 255) {
-			switch x {
-			case r: // {85, 255, 255}
-				return Colors[14]
-			case g: // {255, 85, 255}
-				return Colors[13]
-			case b: // {255, 255, 85}
-				return Colors[11]
-			}
+			return channelSwitch(x, 14, 13, 11)
 		}
 		break
 	}
