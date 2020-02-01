@@ -72,7 +72,7 @@ func closerToWhite(v uint8, mode RoundMode) bool {
 	return false
 }
 
-func closestGrayCodeToRGB(vv uint8, mode RoundMode) uint8 {
+func closestToRGBGrayCode(vv uint8, mode RoundMode) uint8 {
 	grayIndex := divideRound(vv-8, 10, mode)
 	closeToValue := func(v1 uint8) bool {
 		return diffWithMode(v1, vv, mode) <

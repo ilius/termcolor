@@ -54,7 +54,7 @@ func ClosestGrayToRGB(target *color.RGBA, mode RoundMode) *ColorProp {
 	if vv == 255 {
 		return Colors[15]
 	}
-	code := closestGrayCodeToRGB(vv, mode)
+	code := closestToRGBGrayCode(vv, mode)
 	return Colors[code]
 }
 
