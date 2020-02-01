@@ -97,18 +97,6 @@ func closestGrayCodeToRGB(vv uint8, mode RoundMode) uint8 {
 	return grayIndex + 232
 }
 
-func validRoundMode(mode RoundMode) bool {
-	switch mode {
-	case RoundCloser:
-		return true
-	case RoundDown:
-		return true
-	case RoundUp:
-		return true
-	}
-	return false
-}
-
 func roundValue(v uint8, mode RoundMode) int {
 	switch mode {
 	case RoundDown:

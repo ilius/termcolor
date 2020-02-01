@@ -5,14 +5,6 @@ import (
 	"image/color"
 )
 
-type RoundMode uint8
-
-const (
-	RoundCloser RoundMode = iota
-	RoundDown
-	RoundUp
-)
-
 // DefaultGrayMaxDelta is default value for GrayMaxDelta as option for ClosestToRGB func
 var DefaultGrayMaxDelta uint8 = 20
 
@@ -114,7 +106,7 @@ func ClosestToRGBFromPalette(target *color.RGBA) *ColorProp {
 
 // ClosestToRGB finds the closest terminal color to a given full RGB color
 func ClosestToRGB(in *ClosestToRGBInput) (*ColorProp, error) {
-	if !validRoundMode(in.RoundMode) {
+	if !in.RoundMode.isValid() {
 		return nil, fmt.Errorf("invalid RoundMode")
 	}
 	ri := roundValue(in.Target.R, in.RoundMode)
