@@ -224,7 +224,6 @@ func closestGrayCodeToRGB(vv uint8, mode RoundMode) uint8 {
 		return diffWithMode(v1, vv, mode) <
 			diffWithMode(Colors[grayIndex+232].RGBA.R, vv, mode)
 	}
-	// fmt.Printf("ClosestGrayToRGB: vv=%v -> code=%v\n", vv, code)
 	switch grayIndex {
 	case 7, 8: // {78, 78, 78}, {88, 88, 88}
 		if closeToValue(85) {
@@ -235,7 +234,6 @@ func closestGrayCodeToRGB(vv uint8, mode RoundMode) uint8 {
 			return 7 // {185, 185, 185}
 		}
 	case 23, 24, 25: // {238, 238, 238}
-		// fmt.Printf("closestGrayCodeToRGB: vv=%v -> closerToWhite=%v\n", vv, closerToWhite(vv, mode))
 		if closerToWhite(vv, mode) {
 			return 15 // white
 		} else {
@@ -271,9 +269,7 @@ func closestFromPalette(target *color.RGBA) *ColorProp {
 	}
 	switch {
 	case x <= delta && around(z, 170):
-		// fmt.Println("case 1")
 		if y <= delta {
-			// fmt.Println("case 1.1")
 			switch z {
 			case r: // {170, 0, 0}
 				return Colors[1]
@@ -283,7 +279,6 @@ func closestFromPalette(target *color.RGBA) *ColorProp {
 				return Colors[4]
 			}
 		} else if around(y, 170) {
-			// fmt.Println("case 1.2")
 			switch x {
 			case r: // {0, 170, 170}
 				return Colors[6]
@@ -293,7 +288,6 @@ func closestFromPalette(target *color.RGBA) *ColorProp {
 				break
 			}
 		} else {
-			// fmt.Printf("case 1.3: r=%v, g=%v, b=%v\n", r, g, b)
 			// {170, 85, 0}
 			if around(r, 170) && around(g, 85) && b <= delta {
 				return Colors[3]
@@ -301,9 +295,7 @@ func closestFromPalette(target *color.RGBA) *ColorProp {
 		}
 		break
 	case around(x, 85) && around(z, 255):
-		// fmt.Println("case 2")
 		if around(y, 85) {
-			// fmt.Println("case 2.1")
 			switch z {
 			case r: // {255, 85, 85}
 				return Colors[9]
@@ -313,7 +305,6 @@ func closestFromPalette(target *color.RGBA) *ColorProp {
 				return Colors[12]
 			}
 		} else if around(y, 255) {
-			// fmt.Println("case 2.2")
 			switch x {
 			case r: // {85, 255, 255}
 				return Colors[14]
@@ -360,7 +351,6 @@ func ClosestToRGB(in *ClosestToRGBInput) (*ColorProp, error) {
 		resGray := ClosestGrayToRGB(&in.Target, in.RoundMode)
 		dist := DistanceRGB(res.RGBA, in.Target)
 		distGray := DistanceRGB(resGray.RGBA, in.Target)
-		// fmt.Printf("color=%#v, dist=%.1f, distGray=%.1f, gray=%v\n", in.Target, dist, distGray, resGray.RGBA)
 		if distGray < dist {
 			res = resGray
 		}
