@@ -1,7 +1,6 @@
 package termcolor
 
 import (
-	"image/color"
 	"sort"
 )
 
@@ -33,17 +32,6 @@ var first16Colors = map[uint8][3]uint8{
 	11: {255, 255, 85},  // ffff55, tango:fce94f, group 6
 	13: {255, 85, 255},  // ff55ff, tango:ad7fa8, group 6
 	14: {85, 255, 255},  // 55ffff, tango:34e2e2, group 6
-}
-
-func divideRoundUp(a uint8, b uint8) uint8 {
-	return (a + b - 1) / b
-}
-
-func divideRoundCloser(a uint8, b uint8) uint8 {
-	if a%b > b/2 {
-		return (a + b - 1) / b
-	}
-	return a / b
 }
 
 // returns round(a/b) based on given RoundMode
@@ -158,44 +146,4 @@ func roundValueUp(v uint8) int {
 	return sort.Search(6, func(i int) bool {
 		return values[i] >= v
 	})
-}
-
-func absInt8Diff(a uint8, b uint8) uint8 {
-	d := int16(a) - int16(b)
-	if d < 0 {
-		d = -d
-	}
-	return uint8(d)
-}
-
-func max3uint8(a uint8, b uint8, c uint8) uint8 {
-	if a < b {
-		a = b
-	}
-	// ^ in Python words: a = max(a, b)
-	if a < c {
-		a = c
-	}
-	// ^ in Python words: a = max(a, c)
-	return a
-}
-
-func sortedRGB(c *color.RGBA) (uint8, uint8, uint8) {
-	s := []uint8{c.R, c.G, c.B}
-	sort.Slice(s, func(i int, j int) bool {
-		return s[i] < s[j]
-	})
-	return s[0], s[1], s[2]
-}
-
-func rgbMaxDelta(c *color.RGBA) uint8 {
-	return max3uint8(
-		absInt8Diff(c.R, c.G),
-		absInt8Diff(c.R, c.B),
-		absInt8Diff(c.G, c.B),
-	)
-}
-
-func rgbAverage(c *color.RGBA) uint8 {
-	return uint8((uint16(c.R) + uint16(c.G) + uint16(c.B)) / 3)
 }
