@@ -70,16 +70,27 @@ func CodeToRGB(n uint8) (uint8, uint8, uint8) {
 	return red, green, blue
 }
 
-func roundValue(v uint8, mode RoundMode) (int, error) {
+func validRoundMode(mode RoundMode) bool {
 	switch mode {
 	case RoundCloser:
-		return roundValueCloser(v), nil
+		return true
 	case RoundDown:
-		return roundValueDown(v), nil
+		return true
 	case RoundUp:
-		return roundValueUp(v), nil
+		return true
 	}
-	return 0, fmt.Errorf("roundValue: invalid mode")
+	return false
+}
+
+func roundValue(v uint8, mode RoundMode) int {
+	switch mode {
+	case RoundDown:
+		return roundValueDown(v)
+	case RoundUp:
+		return roundValueUp(v)
+	}
+	// assume RoundCloser
+	return roundValueCloser(v)
 }
 
 func roundValueCloser(v uint8) int {
@@ -304,18 +315,12 @@ func closestFromPalette(target *color.RGBA) *ColorProp {
 
 // ClosestToRGB finds the closest terminal color to a given full RGB color
 func ClosestToRGB(in *ClosestToRGBInput) (*ColorProp, error) {
-	ri, err := roundValue(in.Target.R, in.RoundMode)
-	if err != nil {
-		return nil, err
+	if !validRoundMode(in.RoundMode) {
+		return nil, fmt.Errorf("invalid RoundMode")
 	}
-	gi, err := roundValue(in.Target.G, in.RoundMode)
-	if err != nil {
-		return nil, err
-	}
-	bi, err := roundValue(in.Target.B, in.RoundMode)
-	if err != nil {
-		return nil, err
-	}
+	ri := roundValue(in.Target.R, in.RoundMode)
+	gi := roundValue(in.Target.G, in.RoundMode)
+	bi := roundValue(in.Target.B, in.RoundMode)
 	code := ri*36 + gi*6 + bi + 16
 	if code == 16 {
 		code = 0

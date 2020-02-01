@@ -39,6 +39,11 @@ func TestClosestToRGB(t *testing.T) {
 		}
 	}
 	test(Case{
+		input:       color.RGBA{255, 0, 0, 255},
+		mode:        RoundMode(10),
+		expectedErr: "invalid RoundMode",
+	})
+	test(Case{
 		input:        color.RGBA{95, 175, 95, 255},
 		mode:         RoundCloser,
 		expectedCode: 71,
@@ -424,28 +429,16 @@ func TestDivideRound(t *testing.T) {
 
 func TestRoundValue(t *testing.T) {
 	type Case struct {
-		value     uint8
-		mode      RoundMode
-		expected  uint8
-		expectErr string
+		value    uint8
+		mode     RoundMode
+		expected uint8
 	}
 	test := func(tc Case) {
 		is := is.New(t).AddMsg("value=%v, mode=%v", tc.value, tc.mode)
-		actualIndex, err := roundValue(tc.value, tc.mode)
+		actualIndex := roundValue(tc.value, tc.mode)
 		actual := values[actualIndex]
 		is.Equal(actual, tc.expected)
-		if tc.expectErr != "" {
-			is.ErrMsg(err, tc.expectErr)
-		} else {
-			is.NotErr(err)
-		}
 	}
-	test(Case{
-		value:     0,
-		mode:      RoundMode(10),
-		expected:  0,
-		expectErr: "roundValue: invalid mode",
-	})
 	test(Case{
 		value:    0,
 		mode:     RoundCloser,
