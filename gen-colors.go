@@ -4,18 +4,14 @@ package main
 
 import (
 	"fmt"
-	"os"
+	"go/format"
+	"io/ioutil"
 
 	"github.com/ilius/termcolor"
 )
 
 func main() {
-	file, err := os.Create("colors.go")
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-	fmt.Fprintf(file, `package termcolor
+	goCode := `package termcolor
 
 import (
 	"image/color"
@@ -29,12 +25,11 @@ type ColorProp struct {
 }
 
 var Colors = [256]*ColorProp{
-`)
+`
 	for code, names := range termcolor.ColorNames {
 		red, green, blue := termcolor.CodeToRGB(uint8(code))
 		htmlColor := termcolor.RGBToHexColor(red, green, blue)
-		fmt.Fprintf(
-			file,
+		goCode += fmt.Sprintf(
 			"\t&ColorProp{\n"+
 				"\t\tCode: %d,\n"+
 				"\t\tRGBA: color.RGBA{%d, %d, %d, 255},\n"+
@@ -47,5 +42,13 @@ var Colors = [256]*ColorProp{
 			names,
 		)
 	}
-	fmt.Fprintf(file, "}\n")
+	goCode += "}"
+	goCodeNew, err := format.Source([]byte(goCode))
+	if err != nil {
+		panic(err)
+	}
+	err = ioutil.WriteFile("colors.go", goCodeNew, 0644)
+	if err != nil {
+		panic(err)
+	}
 }
