@@ -11,7 +11,12 @@ import (
 )
 
 func main() {
-	goCode := "package termcolor\n\nvar ColorNames = [][]string{\n"
+	goCode := `//go:generate go run gen-names.go
+
+package termcolor
+
+var ColorNames = [][]string{
+`
 	for _, c := range termcolor.Colors {
 		goCode += fmt.Sprintf("\t%#v,\n", c.Names)
 	}

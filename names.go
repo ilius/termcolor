@@ -1,3 +1,5 @@
+//go:generate go run gen-names.go
+
 package termcolor
 
 var ColorNames = [][]string{
