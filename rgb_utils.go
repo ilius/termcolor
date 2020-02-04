@@ -24,3 +24,11 @@ func rgbMaxDelta(c *color.RGBA) uint8 {
 func rgbAverage(c *color.RGBA) uint8 {
 	return uint8((uint16(c.R) + uint16(c.G) + uint16(c.B)) / 3)
 }
+
+func rgbToFloat(c *color.RGBA) [3]float64 {
+	return [3]float64{
+		float64(c.R) / 255,
+		float64(c.G) / 255,
+		float64(c.B) / 255,
+	}
+}
