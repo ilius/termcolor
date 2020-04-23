@@ -16,9 +16,9 @@ func uint8to32(x uint8) uint32 {
 	return uint32(float64(x) * 257.0)
 }
 
-type SimpleRGB [3]uint8
+type simpleRGB [3]uint8
 
-func (c SimpleRGB) RGBA() (r, g, b, a uint32) {
+func (c simpleRGB) RGBA() (r, g, b, a uint32) {
 	return uint8to32(c[0]), uint8to32(c[1]), uint8to32(c[2]), 0xffff
 }
 
@@ -54,7 +54,7 @@ var Colors = [256]*ColorProp{
 `
 	for code, names := range termcolor.ColorNames {
 		red, green, blue := termcolor.CodeToRGB(uint8(code))
-		cf := colorful.MakeColor(SimpleRGB{red, green, blue})
+		cf := colorful.MakeColor(simpleRGB{red, green, blue})
 		H, S, L := cf.Hsl()
 		htmlColor := termcolor.RGBToHexColor(red, green, blue)
 		goCode += fmt.Sprintf(
