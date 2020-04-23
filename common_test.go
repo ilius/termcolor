@@ -1,7 +1,7 @@
 package termcolor
 
 import (
-	"github.com/ilius/is"
+	"github.com/ilius/is/v2"
 )
 
 func isFloatBetween(is *is.Is, actual float64, min float64, max float64) {

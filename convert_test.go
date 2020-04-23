@@ -4,7 +4,7 @@ import (
 	"image/color"
 	"testing"
 
-	"github.com/ilius/is"
+	"github.com/ilius/is/v2"
 )
 
 func TestClosestToRGB(t *testing.T) {
