@@ -1,5 +1,12 @@
 package termcolor
 
+// modify this file to add new color names
+// then run 'go run gen-names.go' and 'go run gen-lookup.go'
+// to regenetae names.go and lookup.go
+// if you have changed ColorProp struct or modified gen-colors.go to change
+// structure or format, run 'go run gen-colors.go' after you make sure
+// names.go is up-to-date with colors.go
+
 import (
 	"image/color"
 )
