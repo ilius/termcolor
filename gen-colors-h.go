@@ -68,11 +68,13 @@ ColorProp colors[] = {
 				"\t\t.hsl = "+formatHSL(H, S, L)+",\n"+
 				"\t\t.hex = %#v,\n"+
 				"\t\t.names = %#v,\n"+
+				"\t\t.nameCount = %d,\n"+
 				"\t},\n",
 			code,
 			red, green, blue,
 			htmlColor,
 			strings.Join(names, ","),
+			len(names),
 		)
 	}
 	cCode += "};"
