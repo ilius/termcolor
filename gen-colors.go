@@ -39,6 +39,13 @@ func formatHSL(h, s, l float64) string {
 func main() {
 	goCode := `package termcolor
 
+// modify this file to add new color names
+// then run 'go run gen-names.go' and 'go run gen-lookup.go'
+// to regenetae names.go and lookup.go
+// if you have changed ColorProp struct or modified gen-colors.go to change
+// structure or format, run 'go run gen-colors.go' after you make sure
+// names.go is up-to-date with colors.go
+
 import (
 	"image/color"
 )
@@ -55,7 +62,10 @@ var Colors = [256]*ColorProp{
 `
 	for code, names := range termcolor.ColorNames {
 		red, green, blue := termcolor.CodeToRGB(uint8(code))
-		cf := colorful.MakeColor(simpleRGB{red, green, blue})
+		cf, ok := colorful.MakeColor(simpleRGB{red, green, blue})
+		if !ok {
+			panic("failed to make color")
+		}
 		H, S, L := cf.Hsl()
 		htmlColor := termcolor.RGBToHexColor(red, green, blue)
 		goCode += fmt.Sprintf(
