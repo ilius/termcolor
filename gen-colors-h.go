@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"strconv"
 	"strings"
 
@@ -61,6 +62,11 @@ ColorProp colors[] = {
 		}
 		H, S, L := cf.Hsl()
 		htmlColor := termcolor.RGBToHexColor(red, green, blue)
+		for _, name := range names {
+			if strings.Contains(name, ",") {
+				log.Fatalf("invalid name = %#v\n", name)
+			}
+		}
 		cCode += fmt.Sprintf(
 			"\t{\n"+
 				"\t\t.code = %d,\n"+
