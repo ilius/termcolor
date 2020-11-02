@@ -28,9 +28,9 @@ func CodeToRGB(n uint8) (uint8, uint8, uint8) {
 
 // ClosestToRGBInput is input struct for ClosestToRGB
 type ClosestToRGBInput struct {
+	GrayMaxDelta *uint8 // optional, default: DefaultGrayMaxDelta
 	Target       color.RGBA
 	RoundMode    RoundMode // optional, default: RoundCloser
-	GrayMaxDelta *uint8    // optional, default: DefaultGrayMaxDelta
 }
 
 // getGrayMaxDelta returns GrayMaxDelta if non-nil, and default value (DefaultGrayMaxDelta) if nil

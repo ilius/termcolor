@@ -9,10 +9,10 @@ import (
 
 func TestClosestToRGB(t *testing.T) {
 	type Case struct {
-		input        color.RGBA
-		mode         RoundMode
 		grayMaxDelta *uint8
 		expectedErr  string
+		input        color.RGBA
+		mode         RoundMode
 		expectedCode uint8
 	}
 	test := func(tc Case) {

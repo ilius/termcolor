@@ -51,11 +51,11 @@ import (
 )
 
 type ColorProp struct {
-	Code uint8
-	RGBA color.RGBA
-	HSL [3]float64
-	Hex string
+	Hex   string
 	Names []string
+	HSL   [3]float64
+	RGBA  color.RGBA
+	Code  uint8
 }
 
 var Colors = [256]*ColorProp{
