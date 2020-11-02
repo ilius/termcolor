@@ -33,6 +33,32 @@ uint8_t first16Colors[16][3] = {
 	{255, 255, 255}, // 15 -> ffffff, tango:eeeeec, group 1
 };
 
+enum ROUND_MODE {ROUND_CLOSER = 0, ROUND_DOWN = 1, ROUND_UP = 2};
+
+
+uint8_t divideRoundUp(uint8_t a, uint8_t b) {
+	return (a + b - 1) / b
+}
+
+uint8_t divideRoundCloser(uint8_t a, uint8_t b) {
+	if a%b > b/2 {
+		return (a + b - 1) / b
+	}
+	return a / b
+}
+
+// returns round(a/b) based on given RoundMode
+uint8_t divideRound(uint8_t a, uint8_t b, ROUND_MODE mode) {
+	switch mode {
+	case RoundDown:
+		return a / b
+	case RoundUp:
+		return divideRoundUp(a, b)
+	}
+	return divideRoundCloser(a, b)
+}
+
+
 
 uint32_t chanDiffSq(uint8_t x1, uint8_t x2) {
 	int32_t d = (int32_t)x1 - (int32_t)x2;

@@ -1,1 +1,1 @@
-gcc main.c -o test -lm && ./test
+gcc color_funcs_test.c -o test -lm && ./test
