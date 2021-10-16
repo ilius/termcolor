@@ -1,4 +1,6 @@
+//go:build ignore
 // +build ignore
+
 // reads colors.go (var Colors) and generates names.go
 
 package main
