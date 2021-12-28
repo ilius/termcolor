@@ -44,5 +44,4 @@ func main() {
 	}
 
 	fmt.Fprintf(fp, "\n</table>\n</body>\n</html>")
-
 }

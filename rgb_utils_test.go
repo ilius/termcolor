@@ -1,9 +1,10 @@
 package termcolor
 
 import (
-	"github.com/ilius/is/v2"
 	"image/color"
 	"testing"
+
+	"github.com/ilius/is/v2"
 )
 
 func TestRgbToFloat(t *testing.T) {

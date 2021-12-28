@@ -83,5 +83,4 @@ func TestCodeToRGB(t *testing.T) {
 			t.Logf("%s = {%d, %d, %d}", hex, c.R, c.G, c.B)
 		}
 	}
-
 }
