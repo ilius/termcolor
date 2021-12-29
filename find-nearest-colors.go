@@ -139,7 +139,7 @@ func main() {
 		for i, item := range items {
 			strItems[i] = item.String()
 		}
-		data[fmt.Sprintf("dist=%04.1f - code=%d - %s", minDistance, c.Code, c.Hex)] = strItems
+		data[fmt.Sprintf("dist=%04.1f - code=%.3d - %s", minDistance, c.Code, c.Hex)] = strItems
 	}
 	jsonBytes, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
