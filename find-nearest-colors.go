@@ -58,7 +58,7 @@ var skipColorCodes = map[uint8]uint8{
 	255: 1,
 }
 
-func parseCssColorNamesFile(fpath string) map[string]*color.RGBA {
+func parseColorNamesJsonFile(fpath string) map[string]*color.RGBA {
 	origMap := map[string]string{}
 	jsonB, err := ioutil.ReadFile(fpath)
 	if err != nil {
@@ -97,14 +97,23 @@ func (x *DistItem) String() string {
 func main() {
 	inputFileName := os.Args[1]
 	outputFileName := "nearest-colors.json"
-	cssColors := parseCssColorNamesFile(inputFileName)
+	colorNames := parseColorNamesJsonFile(inputFileName)
 	data := map[string][]string{}
 	for _, c := range Colors {
 		if skipColorCodes[c.Code] > 0 {
 			continue
 		}
 		items := []*DistItem{}
-		for name, cc := range cssColors {
+
+		currentNames := map[string]bool{}
+		for _, name := range c.Names {
+			currentNames[name] = true
+		}
+
+		for name, cc := range colorNames {
+			if currentNames[name] {
+				continue
+			}
 			items = append(items, &DistItem{
 				Color:    cc,
 				Name:     name,
