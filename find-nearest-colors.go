@@ -103,18 +103,25 @@ func main() {
 		if skipColorCodes[c.Code] > 0 {
 			continue
 		}
-		items := []*DistItem{}
 
 		currentNames := map[string]bool{}
 		for _, name := range c.Names {
 			currentNames[name] = true
 		}
+		if len(currentNames) >= 2 {
+			continue
+		}
 
+		items := []*DistItem{}
 		for name, cc := range colorNames {
+			distance := DistanceRGB(&c.RGBA, cc)
+			if distance > 10 {
+				continue
+			}
 			items = append(items, &DistItem{
 				Color:    cc,
 				Name:     name,
-				Distance: DistanceRGB(&c.RGBA, cc),
+				Distance: distance,
 			})
 		}
 		if len(items) == 0 {
@@ -127,9 +134,6 @@ func main() {
 			continue
 		}
 		minDistance := items[0].Distance
-		if minDistance >= 30 {
-			continue
-		}
 		end := 3
 		// end := 1
 		// for ; end < 4; end++ {
@@ -137,12 +141,20 @@ func main() {
 		//		break
 		//	}
 		// }
-		items = items[:end]
+		if len(items) > end {
+			items = items[:end]
+		}
 		strItems := make([]string, len(items))
 		for i, item := range items {
 			strItems[i] = item.String()
 		}
-		data[fmt.Sprintf("dist=%04.1f - code=%.3d - %s", minDistance, c.Code, c.Hex)] = strItems
+		data[fmt.Sprintf(
+			"dist=%04.1f - currentNames=%d - code=%.3d - %s",
+			minDistance,
+			len(currentNames),
+			c.Code,
+			c.Hex,
+		)] = strItems
 	}
 	jsonBytes, err := json.MarshalIndent(data, "", "\t")
 	if err != nil {
