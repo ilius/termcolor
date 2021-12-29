@@ -111,18 +111,21 @@ func main() {
 		}
 
 		for name, cc := range colorNames {
-			if currentNames[name] {
-				continue
-			}
 			items = append(items, &DistItem{
 				Color:    cc,
 				Name:     name,
 				Distance: DistanceRGB(&c.RGBA, cc),
 			})
 		}
+		if len(items) == 0 {
+			continue
+		}
 		sort.Slice(items, func(i int, j int) bool {
 			return items[i].Distance < items[j].Distance
 		})
+		if currentNames[items[0].Name] {
+			continue
+		}
 		minDistance := items[0].Distance
 		if minDistance >= 30 {
 			continue
