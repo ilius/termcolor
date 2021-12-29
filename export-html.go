@@ -5,6 +5,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"os"
 	"sort"
 	"strings"
@@ -31,7 +32,7 @@ func exportToHTML(filename string, colors []*termcolor.ColorProp) {
 	hueColWidth := "%10"
 	lightColWidth := "%10"
 
-	tableWidth := "300px"
+	tableWidth := "500px"
 
 	bgColor := "#252525"
 	fgColor := "#ffffff"
@@ -41,11 +42,11 @@ func exportToHTML(filename string, colors []*termcolor.ColorProp) {
 	fmt.Fprintf(fp, "<table width=\"%s\">\n", tableWidth)
 	fmt.Fprintf(fp, "\t<tr>\n\t\t"+strings.Join([]string{
 		`<th width="%s" align="center">Color</th>`,
-		`<th width="%s" align="center">#</th>`,
+		`<th width="%s" align="center">Code</th>`,
 		`<th width="%s" align="center">Hex</th>`,
-		`<th width="%s" align="center">Saturation</th>`,
+		`<th width="%s" align="center">Sat</th>`,
 		`<th width="%s" align="center">Hue</th>`,
-		`<th width="%s" align="center">Lightness</th>`,
+		`<th width="%s" align="center">Light</th>`,
 	}, "\n\t\t"), colorColWidth, codeColWidth, hexColWidth, hueColWidth, satColWidth, lightColWidth)
 
 	for _, c := range colors {
@@ -67,17 +68,24 @@ func main() {
 
 	exportToHTML("colors.html", colors)
 
-	// sort by Saturation, then Hue, then Lightness
+	// sort by Saturation (with delta <= 0.1 allowed) in reverse order
+	// then by Hue (with delta <= 5 allowed)
+	// then by Lightness in reverse order
 	sort.Slice(colors, func(i, j int) bool {
 		i_hsl := colors[i].HSL
 		j_hsl := colors[j].HSL
-		if i_hsl[1] != j_hsl[1] {
-			return i_hsl[1] < j_hsl[1]
+		deltaSat := math.Abs(i_hsl[1] - j_hsl[1])
+		deltaHue := math.Abs(i_hsl[0] - j_hsl[0])
+		if deltaSat > 0.1 {
+			return i_hsl[1] > j_hsl[1]
 		}
-		if i_hsl[0] != j_hsl[0] {
+		if deltaHue > 5 {
 			return i_hsl[0] < j_hsl[0]
 		}
-		return i_hsl[2] < j_hsl[2]
+		if i_hsl[2] != j_hsl[2] {
+			return i_hsl[2] > j_hsl[2]
+		}
+		return colors[i].Code < colors[j].Code
 	})
 	exportToHTML("colors-by-saturation.html", colors)
 }
