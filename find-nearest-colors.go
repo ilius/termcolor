@@ -108,7 +108,7 @@ func main() {
 			items = append(items, &DistItem{
 				Color:    cc,
 				Name:     name,
-				Distance: DistanceRGB(c.RGBA, *cc),
+				Distance: DistanceRGB(&c.RGBA, cc),
 			})
 		}
 		sort.Slice(items, func(i int, j int) bool {
