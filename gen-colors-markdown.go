@@ -38,11 +38,19 @@ func formatHSL(h, s, l float64) string {
 }
 
 func main() {
-	mdText := `## Terminal / ANSI Colors
+	sampleTitle := "Sample"
+	sampleCharN := 59
 
-| Code | Hex       | RGB           | HSL               |
-| ---- | --------- | ------------- | ----------------- |
+	headerTpl := `## Terminal / ANSI Colors
+
+| %s | Code | Hex       | RGB           | HSL               |
+| %s | ---- | --------- | ------------- | ----------------- |
 `
+	mdText := fmt.Sprintf(
+		headerTpl,
+		sampleTitle+strings.Repeat(" ", sampleCharN-len(sampleTitle)),
+		strings.Repeat("-", sampleCharN),
+	)
 	for code, _ := range termcolor.ColorNames {
 		red, green, blue := termcolor.CodeToRGB(uint8(code))
 		cf, ok := colorful.MakeColor(simpleRGB{red, green, blue})
@@ -54,7 +62,11 @@ func main() {
 		rgb := fmt.Sprintf("%d, %d, %d", red, green, blue)
 		hsl := formatHSL(H, S, L)
 		mdText += fmt.Sprintf(
-			"| %- 4s | `%- 7s` | %- 13s | %- 17s |\n",
+			"| %s | %- 4s | `%- 7s` | %- 13s | %- 17s |\n",
+			fmt.Sprintf(
+				`![](https://via.placeholder.com/60x30/%s/000000?text=+)`,
+				hexColor[1:],
+			),
 			fmt.Sprintf("%v", code),
 			hexColor,
 			rgb,
