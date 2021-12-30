@@ -54,16 +54,17 @@ func exportToHTML(filename string, colors []*termcolor.ColorProp) {
 	for _, c := range colors {
 		code := c.Code
 		fmt.Fprintf(fp, "\t<tr>\n")
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" style="background-color:%s">&nbsp;</td>`, colorColWidth, c.Hex)
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%d</td>`, codeColWidth, code)
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center"><pre>%s</pre></td>`, hexColWidth, c.Hex)
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%s</td>`, satColWidth, formatFloat(c.HSL[1]))
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%05.1f</td>`, hueColWidth, c.HSL[0])
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%.4f</td>`, lightColWidth, c.HSL[2])
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%.4f</td>`, lightColWidth, c.HSV[2])
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" style="background-color:%s">&nbsp;</td>`+"\n", colorColWidth, c.Hex)
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%d</td>`+"\n", codeColWidth, code)
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center"><pre>%s</pre></td>`+"\n", hexColWidth, c.Hex)
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%s</td>`+"\n", satColWidth, formatFloat(c.HSL[1]))
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%05.1f</td>`+"\n", hueColWidth, c.HSL[0])
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%.4f</td>`+"\n", lightColWidth, c.HSL[2])
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%.4f</td>`+"\n", lightColWidth, c.HSV[2])
+		fmt.Fprintf(fp, "\t</tr>\n")
 	}
 
-	fmt.Fprintf(fp, "\n</table>\n</body>\n</html>")
+	fmt.Fprintf(fp, "</table>\n</body>\n</html>")
 }
 
 func main() {
