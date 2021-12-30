@@ -31,6 +31,7 @@ func exportToHTML(filename string, colors []*termcolor.ColorProp) {
 	satColWidth := "%10"
 	hueColWidth := "%10"
 	lightColWidth := "%10"
+	valueColWidth := "%10"
 
 	tableWidth := "500px"
 
@@ -47,7 +48,8 @@ func exportToHTML(filename string, colors []*termcolor.ColorProp) {
 		`<th width="%s" align="center">Sat</th>`,
 		`<th width="%s" align="center">Hue</th>`,
 		`<th width="%s" align="center">Light</th>`,
-	}, "\n\t\t"), colorColWidth, codeColWidth, hexColWidth, hueColWidth, satColWidth, lightColWidth)
+		`<th width="%s" align="center">Value</th>`,
+	}, "\n\t\t"), colorColWidth, codeColWidth, hexColWidth, hueColWidth, satColWidth, lightColWidth, valueColWidth)
 
 	for _, c := range colors {
 		code := c.Code
@@ -58,6 +60,7 @@ func exportToHTML(filename string, colors []*termcolor.ColorProp) {
 		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%s</td>`, satColWidth, formatFloat(c.HSL[1]))
 		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%05.1f</td>`, hueColWidth, c.HSL[0])
 		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%.4f</td>`, lightColWidth, c.HSL[2])
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%.4f</td>`, lightColWidth, c.HSV[2])
 	}
 
 	fmt.Fprintf(fp, "\n</table>\n</body>\n</html>")
@@ -74,17 +77,23 @@ func main() {
 	sort.Slice(colors, func(i, j int) bool {
 		i_hsl := colors[i].HSL
 		j_hsl := colors[j].HSL
-		deltaSat := math.Abs(i_hsl[1] - j_hsl[1])
-		deltaHue := math.Abs(i_hsl[0] - j_hsl[0])
-		if deltaSat > 0.1 {
+
+		if math.Abs(i_hsl[1]-j_hsl[1]) > 0.1 {
 			return i_hsl[1] > j_hsl[1]
 		}
-		if deltaHue > 5 {
+
+		if math.Abs(i_hsl[0]-j_hsl[0]) > 5 {
 			return i_hsl[0] < j_hsl[0]
 		}
+
 		if i_hsl[2] != j_hsl[2] {
 			return i_hsl[2] > j_hsl[2]
 		}
+
+		// if colors[i].HSV[2] != colors[j].HSV[2] {
+		//	return colors[i].HSV[2] > colors[j].HSV[2]
+		// }
+
 		return colors[i].Code < colors[j].Code
 	})
 	exportToHTML("colors-by-saturation.html", colors)
