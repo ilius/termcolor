@@ -34,28 +34,29 @@ uint8_t first16Colors[16][3] = {
 };
 
 enum ROUND_MODE {ROUND_CLOSER = 0, ROUND_DOWN = 1, ROUND_UP = 2};
+typedef enum ROUND_MODE ROUND_MODE;
 
 
 uint8_t divideRoundUp(uint8_t a, uint8_t b) {
-	return (a + b - 1) / b
+	return (a + b - 1) / b;
 }
 
 uint8_t divideRoundCloser(uint8_t a, uint8_t b) {
-	if a%b > b/2 {
-		return (a + b - 1) / b
+	if (a%b > b/2) {
+		return (a + b - 1) / b;
 	}
-	return a / b
+	return a / b;
 }
 
 // returns round(a/b) based on given RoundMode
 uint8_t divideRound(uint8_t a, uint8_t b, ROUND_MODE mode) {
-	switch mode {
-	case RoundDown:
-		return a / b
-	case RoundUp:
-		return divideRoundUp(a, b)
+	switch (mode) {
+	case ROUND_DOWN:
+		return a / b;
+	case ROUND_UP:
+		return divideRoundUp(a, b);
 	}
-	return divideRoundCloser(a, b)
+	return divideRoundCloser(a, b);
 }
 
 
