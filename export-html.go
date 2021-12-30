@@ -56,8 +56,8 @@ func exportToHTML(filename string, colors []*termcolor.ColorProp) {
 		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%d</td>`, codeColWidth, code)
 		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center"><pre>%s</pre></td>`, hexColWidth, c.Hex)
 		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%s</td>`, satColWidth, formatFloat(c.HSL[1]))
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%s</td>`, hueColWidth, formatFloat(c.HSL[0]))
-		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%s</td>`, lightColWidth, formatFloat(c.HSL[2]))
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%05.1f</td>`, hueColWidth, c.HSL[0])
+		fmt.Fprintf(fp, "\t\t"+`<td width="%s" align="center">%.4f</td>`, lightColWidth, c.HSL[2])
 	}
 
 	fmt.Fprintf(fp, "\n</table>\n</body>\n</html>")
