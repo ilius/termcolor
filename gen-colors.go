@@ -29,7 +29,7 @@ func formatFloat(f float64) string {
 	return strconv.FormatFloat(f, 'f', -1, 64)
 }
 
-func formatHSL(h, s, l float64) string {
+func formatTrippleFloat(h, s, l float64) string {
 	return fmt.Sprintf(
 		"[3]float64{%s, %s, %s}",
 		formatFloat(h),
@@ -56,6 +56,7 @@ type ColorProp struct {
 	Hex   string
 	Names []string
 	HSL   [3]float64
+	HSV   [3]float64
 	RGBA  color.RGBA
 	Code  uint8
 }
@@ -68,13 +69,13 @@ var Colors = [256]*ColorProp{
 		if !ok {
 			panic("failed to make color")
 		}
-		H, S, L := cf.Hsl()
 		htmlColor := termcolor.RGBToHexColor(red, green, blue)
 		goCode += fmt.Sprintf(
 			"\t&ColorProp{\n"+
 				"\t\tCode: %d,\n"+
 				"\t\tRGBA: color.RGBA{%d, %d, %d, 255},\n"+
-				"\t\tHSL: "+formatHSL(H, S, L)+",\n"+
+				"\t\tHSL: "+formatTrippleFloat(cf.Hsl())+",\n"+
+				"\t\tHSV: "+formatTrippleFloat(cf.Hsv())+",\n"+
 				"\t\tHex: %#v,\n"+
 				"\t\tNames: %#v,\n"+
 				"\t},\n",
