@@ -56,6 +56,7 @@ func exportTableToHTML(filename string, colorTable [][]*termcolor.ColorProp) {
 	}
 
 	fmt.Fprintf(fp, "</table>\n</body>\n</html>")
+	fmt.Println("Created", filename)
 }
 
 func main() {
