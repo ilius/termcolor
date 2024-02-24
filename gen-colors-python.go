@@ -39,7 +39,7 @@ func formatHSL(h, s, l float64) string {
 	)
 }
 
-func jsonEncode(obj interface{}) string {
+func jsonEncode(obj any) string {
 	b, err := json.Marshal(obj)
 	if err != nil {
 		panic(err)
